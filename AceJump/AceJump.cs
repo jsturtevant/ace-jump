@@ -4,6 +4,9 @@ using Microsoft.VisualStudio.Text.Editor;
 
 namespace AceJump
 {
+    using Microsoft.VisualStudio.Text;
+    using Microsoft.VisualStudio.Text.Formatting;
+
     /// <summary>
     /// Adornment class that draws a square box in the top right hand corner of the viewport
     /// </summary>
@@ -12,6 +15,8 @@ namespace AceJump
         private Image _image;
         private IWpfTextView _view;
         private IAdornmentLayer _adornmentLayer;
+
+        private AceJumperControl acejumper;
 
         /// <summary>
         /// Creates a square image and attaches an event handler to the layout changed event that
@@ -22,33 +27,13 @@ namespace AceJump
         {
             _view = view;
 
-
-            Brush brush = new SolidColorBrush(Colors.BlueViolet);
-            brush.Freeze();
-            Brush penBrush = new SolidColorBrush(Colors.Red);
-            penBrush.Freeze();
-            Pen pen = new Pen(penBrush, 0.5);
-            pen.Freeze();
-
-            //draw a square with the created brush and pen
-            System.Windows.Rect r = new System.Windows.Rect(0, 0, 30, 30);
-            Geometry g = new RectangleGeometry(r);
-            GeometryDrawing drawing = new GeometryDrawing(brush, pen, g);
-            drawing.Freeze();
-
-            DrawingImage drawingImage = new DrawingImage(drawing);
-            drawingImage.Freeze();
-
-            _image = new Image();
-            _image.Source = drawingImage;
+            acejumper = new AceJumperControl();
 
             //Grab a reference to the adornment layer that this adornment should be added to
             _adornmentLayer = view.GetAdornmentLayer("AceJump");
 
-            //_view.ViewportHeightChanged += delegate { this.onSizeChange(); };
-            //_view.ViewportWidthChanged += delegate { this.onSizeChange(); };
-
             _view.Caret.PositionChanged += delegate { this.onSizeChange(); };
+            _view.LayoutChanged += delegate { this.onSizeChange(); };
         }
 
         public void onSizeChange()
@@ -56,12 +41,11 @@ namespace AceJump
             //clear the adornment layer of previous adornments
             _adornmentLayer.RemoveAllAdornments();
 
-            //Place the image in the top right hand corner of the Viewport
-            Canvas.SetLeft(_image, _view.Caret.Top -20);
-            Canvas.SetTop(_image, _view.Caret.Bottom +30);
+            SnapshotSpan span = new SnapshotSpan(_view.Caret.ContainingTextViewLine.End,0);
 
             //add the image to the adornment layer and make it relative to the viewport
-            _adornmentLayer.AddAdornment(AdornmentPositioningBehavior.ViewportRelative, null, null, _image, null);
+            _adornmentLayer.AddAdornment(AdornmentPositioningBehavior.TextRelative, span, null, acejumper, null);
+
         }
     }
 }
