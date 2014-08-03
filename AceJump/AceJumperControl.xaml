@@ -1,8 +1,8 @@
-﻿<Window WindowStyle="None"
+﻿<Window WindowStyle="None" ResizeMode="NoResize"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    x:Class="AceJump.AceJumperControl" Height="31" Width="127">
-    <TextBox Name="JumpBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+    x:Class="AceJump.AceJumperControl" Height="24" Width="40">
+    <TextBox Name="JumpBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="41"/>
 
     <!-- Client area (for content) -->
 
