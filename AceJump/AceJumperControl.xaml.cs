@@ -15,14 +15,56 @@ using System.Windows.Shapes;
 
 namespace AceJump
 {
+    using System.ComponentModel;
+    using System.Windows.Interop;
+    using  System.Windows;
+   // using EnvDTE;
+    using Microsoft.VisualStudio.PlatformUI;
+    using Microsoft.VisualStudio.Text.Editor;
+
+    using MyAddin1;
+
     /// <summary>
     /// Interaction logic for AceJumperControl.xaml
     /// </summary>
-    public partial class AceJumperControl : UserControl
+    public partial class AceJumperControl : Window
     {
-        public AceJumperControl()
+        private IWpfTextView view;
+
+        private AceJump aceJump;
+
+        public AceJumperControl(IWpfTextView view)
         {
             InitializeComponent();
+            this.JumpBox.Focus();
+            this.view = view;
+
+            this.PreviewKeyDown += new KeyEventHandler(HandleEsc);
+        }
+
+        private void HandleEsc(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+                Close();
+
+
+            if (this.aceJump == null)
+            {
+                this.aceJump = new AceJump(this.view);
+            }
+            this.aceJump.SetCurrentLetter(e.Key.ToString());
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            this.aceJump.ClearAdornment();
+
+            base.OnClosed(e);
         }
     }
 }
