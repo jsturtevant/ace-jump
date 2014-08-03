@@ -16,28 +16,30 @@ namespace AceJump
     public partial class AceJumperControl : Window
     {
         private IWpfTextView view;
-
         private AceJump aceJump;
-
-        private bool letterdrawn;
+        private bool letterSelectionActive;
 
         public AceJumperControl(IWpfTextView view)
         {
             InitializeComponent();
-            this.JumpBox.Focus();
-            this.view = view;
 
+            this.view = view;
+            
+            this.CreateAdornment();
+            this.SetJumpBoxLocation();
+            this.JumpBox.Focus();
+            
+            this.PreviewKeyDown += new KeyEventHandler(this.HandleKeyPress);
+        }
+
+        private void SetJumpBoxLocation()
+        {
             TextBounds characterBounds = view.TextViewLines.GetCharacterBounds(view.Caret.Position.BufferPosition);
             Point point = new Point(view.ViewportTop + characterBounds.Top, view.ViewportLeft + characterBounds.Right);
             Point pointToScreen = view.VisualElement.PointToScreen(point);
-
             this.Top = pointToScreen.X;
             this.Left = pointToScreen.Y;
-
-            this.PreviewKeyDown += new KeyEventHandler(this.HandleKeyPress);
-
         }
-
 
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
@@ -47,16 +49,10 @@ namespace AceJump
                 return;
             }
 
-
-            if (this.aceJump == null)
-            {
-                this.aceJump = new AceJump(this.view);
-            }
-
-            if (!this.letterdrawn)
+            if (!this.letterSelectionActive)
             {
                 this.aceJump.SetCurrentLetter(e.Key.ToString());
-                letterdrawn = true;
+                this.letterSelectionActive = true;
             }
             else
             {
@@ -65,7 +61,15 @@ namespace AceJump
                 this.Close();
                 return;
             }
-            
+        }
+
+        private void CreateAdornment()
+        {
+            if (this.aceJump == null)
+            {
+                // create the adornment
+                this.aceJump = new AceJump(this.view);
+            }
         }
 
         protected override void OnClosed(EventArgs e)
@@ -74,7 +78,6 @@ namespace AceJump
             {
                 this.aceJump.ClearAdornment();
             }
-
 
             base.OnClosed(e);
         }
