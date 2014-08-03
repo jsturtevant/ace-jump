@@ -1,4 +1,4 @@
 ace-jump
 ========
 Underdevelopment. 
-Inspired by AceJump for Webstorm.
+Inspired by [AceJump](http://plugins.jetbrains.com/plugin/?idea&pluginId=7086) for Webstorm.
