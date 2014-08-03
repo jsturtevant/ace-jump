@@ -73,7 +73,7 @@ namespace AceJump
     [TextViewRole(PredefinedTextViewRoles.Editable)]
     [Name("Default Key Processor")]
    
-    internal sealed class DefaultKeyProcessorProvider : IKeyProcessorProvider
+    internal sealed class AceKeyProcessorProvider : IKeyProcessorProvider
     {
 
         [Export(typeof(AdornmentLayerDefinition))]
@@ -82,18 +82,18 @@ namespace AceJump
         public AdornmentLayerDefinition editorAdornmentLayer = null;
     
         [ImportingConstructor]
-        internal DefaultKeyProcessorProvider()
+        internal AceKeyProcessorProvider()
         {
          
         }
 
         public KeyProcessor GetAssociatedProcessor(IWpfTextView wpfTextView)
         {
-            return new VimKeyProcessor(wpfTextView);
+            return new AceKeyProcessor(wpfTextView);
         }
     }
 
-    public class VimKeyProcessor : KeyProcessor
+    public class AceKeyProcessor : KeyProcessor
     {
         private IWpfTextView view;
 
@@ -101,7 +101,7 @@ namespace AceJump
 
         private KeyTypeConverter keyTypeConverter;
 
-        public VimKeyProcessor(IWpfTextView wpfTextView)
+        public AceKeyProcessor(IWpfTextView wpfTextView)
         {
             this.view = wpfTextView;
             this.adornment = adornment;
