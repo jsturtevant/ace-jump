@@ -4,6 +4,8 @@ using System.Windows.Input;
 namespace AceJump
 {
     using  System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Media;
 
     using Microsoft.VisualStudio.Text;
     using Microsoft.VisualStudio.Text.Editor;
@@ -25,7 +27,7 @@ namespace AceJump
 
             this.view = view;
             
-            this.CreateAdornment();
+            this.CreateAdornmentLayer();
             this.SetJumpBoxLocation();
             this.JumpBox.Focus();
             
@@ -34,11 +36,13 @@ namespace AceJump
 
         private void SetJumpBoxLocation()
         {
+            // doesn seem to end me up in the right place but close enough
+            // need to figure out a better way
             TextBounds characterBounds = view.TextViewLines.GetCharacterBounds(view.Caret.Position.BufferPosition);
-            Point point = new Point(view.ViewportTop + characterBounds.Top, view.ViewportLeft + characterBounds.Right);
-            Point pointToScreen = view.VisualElement.PointToScreen(point);
-            this.Top = pointToScreen.X;
-            this.Left = pointToScreen.Y;
+            Point point = new Point(view.ViewportTop + characterBounds.Top, view.ViewportLeft + characterBounds.Left);
+            Point screenpoint = view.VisualElement.PointToScreen(point);
+            this.Top = screenpoint.X;
+            this.Left = screenpoint.Y;
         }
 
         private void HandleKeyPress(object sender, KeyEventArgs e)
@@ -63,11 +67,11 @@ namespace AceJump
             }
         }
 
-        private void CreateAdornment()
+        private void CreateAdornmentLayer()
         {
             if (this.aceJump == null)
             {
-                // create the adornment
+                // create the adornment layer
                 this.aceJump = new AceJump(this.view);
             }
         }
@@ -76,7 +80,7 @@ namespace AceJump
         {
             if (this.aceJump != null)
             {
-                this.aceJump.ClearAdornment();
+                this.aceJump.ClearAdornments();
             }
 
             base.OnClosed(e);
