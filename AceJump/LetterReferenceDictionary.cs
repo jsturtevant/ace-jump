@@ -10,7 +10,7 @@ namespace AceJump
 
     using Microsoft.VisualStudio.Text;
 
-    internal class LetterReferenceDictionary
+    public class LetterReferenceDictionary
     {
         Dictionary<string, SnapshotSpan> dictionary  = new Dictionary<string, SnapshotSpan>();
 
