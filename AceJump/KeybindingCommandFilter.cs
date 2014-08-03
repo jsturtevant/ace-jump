@@ -3,11 +3,14 @@
     using System;
     using System.Runtime.InteropServices;
 
+    using EnvDTE;
+
     using Microsoft.VisualStudio;
     using Microsoft.VisualStudio.OLE.Interop;
+    using Microsoft.VisualStudio.PlatformUI;
     using Microsoft.VisualStudio.Text.Editor;
 
-    internal class KeybindingCommandFilter : IOleCommandTarget
+    public class KeybindingCommandFilter : IOleCommandTarget
     {
         private IWpfTextView textView;
         private bool adorned;
@@ -15,10 +18,12 @@
 
         internal bool added;
 
+  
         public KeybindingCommandFilter(IWpfTextView textView)
         {
             this.textView = textView;
             this.adorned = false;
+  
         }
 
         public int QueryStatus(ref Guid pguidCmdGroup, uint cCmds, OLECMD[] prgCmds, IntPtr pCmdText)
@@ -42,7 +47,10 @@
                     }
                 }
             }
+
+
             return this.nextCommand.Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
+
         }
     }
 }
