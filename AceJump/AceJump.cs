@@ -84,13 +84,14 @@ namespace AceJump
                         //Align the image with the top of the bounds of the text geometry
                         Canvas.SetLeft(letterReference, g.Bounds.Left);
                         Canvas.SetTop(letterReference, g.Bounds.Top);
+
                         _layer.AddAdornment(AdornmentPositioningBehavior.TextRelative,span,null,letterReference,null);
                     }
                 }
             }
         }
 
-        public void ClearAdornment()
+        public void ClearAdornments()
         {
             this.letter = string.Empty;
             _layer.RemoveAllAdornments();
