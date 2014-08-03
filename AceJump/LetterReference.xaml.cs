@@ -25,6 +25,7 @@ namespace AceJump
         public LetterReference(string referenceLetter, Rect bounds)
         {
             InitializeComponent();
+
             this.Content = referenceLetter.ToUpper();
             this.Background = Brushes.GreenYellow;
 
@@ -35,7 +36,6 @@ namespace AceJump
 
             // make it stand out
             this.FontWeight = FontWeights.ExtraBold;
-
         }
     }
 }
