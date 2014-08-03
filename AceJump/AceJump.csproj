@@ -73,9 +73,11 @@
       <DependentUpon>AceJumperControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="AceJumpFactory.cs" />
-    <Compile Include="KeybindingCommandFilter.cs" />
     <Compile Include="KeyTypeConverter.cs" />
-    <Compile Include="ModelessWindow.cs" />
+    <Compile Include="LetterReference.xaml.cs">
+      <DependentUpon>LetterReference.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LetterReferenceDictionary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -85,6 +87,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="AceJumperControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LetterReference.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
