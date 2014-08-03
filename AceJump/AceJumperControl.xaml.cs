@@ -21,6 +21,7 @@ namespace AceJump
    // using EnvDTE;
     using Microsoft.VisualStudio.PlatformUI;
     using Microsoft.VisualStudio.Text.Editor;
+    using Microsoft.VisualStudio.Text.Formatting;
 
     using MyAddin1;
 
@@ -39,13 +40,25 @@ namespace AceJump
             this.JumpBox.Focus();
             this.view = view;
 
+            TextBounds characterBounds = view.TextViewLines.GetCharacterBounds(view.Caret.Position.BufferPosition);
+            Point point = new Point(view.ViewportTop + characterBounds.Top, view.ViewportLeft + characterBounds.Right);
+            Point pointToScreen = view.VisualElement.PointToScreen(point);
+
+            this.Top = pointToScreen.X;
+            this.Left = pointToScreen.Y;
+
             this.PreviewKeyDown += new KeyEventHandler(HandleEsc);
+
         }
+
 
         private void HandleEsc(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
+            {
                 Close();
+                return;
+            }
 
 
             if (this.aceJump == null)
@@ -55,14 +68,13 @@ namespace AceJump
             this.aceJump.SetCurrentLetter(e.Key.ToString());
         }
 
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            base.OnClosing(e);
-        }
-
         protected override void OnClosed(EventArgs e)
         {
-            this.aceJump.ClearAdornment();
+            if (this.aceJump != null)
+            {
+                this.aceJump.ClearAdornment();
+            }
+
 
             base.OnClosed(e);
         }

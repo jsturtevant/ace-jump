@@ -29,7 +29,7 @@ namespace AceJump
             _layer = view.GetAdornmentLayer("AceJump");
 
             //Listen to any event that changes the layout (text changes, scrolling, etc)
-            _view.LayoutChanged += OnLayoutChanged;
+            //_view.LayoutChanged += OnLayoutChanged;
           
 
             //Create the pen and brush to color the box behind the a's
@@ -55,16 +55,16 @@ namespace AceJump
             
         }
 
-        /// <summary>
-        /// On layout change add the adornment to any reformatted lines
-        /// </summary>
-        private void OnLayoutChanged(object sender, TextViewLayoutChangedEventArgs e)
-        {
-            foreach (ITextViewLine line in e.NewOrReformattedLines)
-            {
-                this.CreateVisuals(line);
-            }
-        }
+        ///// <summary>
+        ///// On layout change add the adornment to any reformatted lines
+        ///// </summary>
+        //private void OnLayoutChanged(object sender, TextViewLayoutChangedEventArgs e)
+        //{
+        //    foreach (ITextViewLine line in e.NewOrReformattedLines)
+        //    {
+        //        this.CreateVisuals(line);
+        //    }
+        //}
 
         /// <summary>
         /// Within the given line add the scarlet box behind the a
@@ -106,7 +106,8 @@ namespace AceJump
 
         public void ClearAdornment()
         {
-            
+            this.letter = string.Empty;
+            _layer.RemoveAllAdornments();
         }
     }
 }
