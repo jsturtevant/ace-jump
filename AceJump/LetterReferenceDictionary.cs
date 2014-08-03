@@ -23,6 +23,14 @@ namespace AceJump
             this.dictionary.Add(key, span);
             currentLetter++;
             return key;
-        } 
+        }
+
+        public SnapshotPoint GetLetterPosition(string key)
+        {
+            SnapshotSpan span;
+            this.dictionary.TryGetValue(key, out span);
+
+            return span.Start;
+        }
     }
 }

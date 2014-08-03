@@ -7,6 +7,7 @@ namespace AceJump
     using System.Collections.Generic;
     using System.Linq;
     using System.Windows;
+    using System.Windows.Input;
 
     using EnvDTE;
 
@@ -108,6 +109,11 @@ namespace AceJump
         {
             this.letter = string.Empty;
             _layer.RemoveAllAdornments();
+        }
+
+        public SnapshotPoint GetLetterPosition(string key)
+        {
+          return this.letterLocationSpans.GetLetterPosition(key);
         }
     }
 }
