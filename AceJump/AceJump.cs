@@ -4,7 +4,9 @@ using Microsoft.VisualStudio.Text.Editor;
 
 namespace AceJump
 {
+    using System.Collections.Generic;
     using System.Linq;
+    using System.Windows;
 
     using EnvDTE;
 
@@ -16,21 +18,19 @@ namespace AceJump
     /// </summary>
     class AceJump
     {
-         IAdornmentLayer _layer;
+        IAdornmentLayer _layer;
         IWpfTextView _view;
         Brush _brush;
         Pen _pen;
 
         private string letter;
 
+        private LetterReferenceDictionary letterLocationSpans;
+
         public AceJump(IWpfTextView view)
         {
             _view = view;
             _layer = view.GetAdornmentLayer("AceJump");
-
-            //Listen to any event that changes the layout (text changes, scrolling, etc)
-            //_view.LayoutChanged += OnLayoutChanged;
-          
 
             //Create the pen and brush to color the box behind the a's
             Brush brush = new SolidColorBrush(Color.FromArgb(0x20, 0x00, 0x00, 0xff));
@@ -42,6 +42,8 @@ namespace AceJump
 
             _brush = brush;
             _pen = pen;
+
+            letterLocationSpans = new LetterReferenceDictionary();
         }
 
         public void SetCurrentLetter(string letter)
@@ -52,19 +54,8 @@ namespace AceJump
             {
                 this.CreateVisuals(line);
             }
-            
-        }
 
-        ///// <summary>
-        ///// On layout change add the adornment to any reformatted lines
-        ///// </summary>
-        //private void OnLayoutChanged(object sender, TextViewLayoutChangedEventArgs e)
-        //{
-        //    foreach (ITextViewLine line in e.NewOrReformattedLines)
-        //    {
-        //        this.CreateVisuals(line);
-        //    }
-        //}
+        }
 
         /// <summary>
         /// Within the given line add the scarlet box behind the a
@@ -82,6 +73,8 @@ namespace AceJump
                 if (_view.TextSnapshot[i].ToString().ToLower() == this.letter.First().ToString().ToLower())
                 {
                     SnapshotSpan span = new SnapshotSpan(_view.TextSnapshot, Span.FromBounds(i, i + 1));
+                    string key = this.letterLocationSpans.AddSpan(span);
+
                     Geometry g = textViewLines.GetMarkerGeometry(span);
                     if (g != null)
                     {
@@ -99,6 +92,13 @@ namespace AceJump
                         Canvas.SetTop(image, g.Bounds.Top);
 
                         _layer.AddAdornment(AdornmentPositioningBehavior.TextRelative, span, null, image, null);
+                        
+                        LetterReference letterReference = new LetterReference(key);
+
+                        //Align the image with the top of the bounds of the text geometry
+                        Canvas.SetLeft(letterReference, g.Bounds.Left);
+                        Canvas.SetTop(letterReference, g.Bounds.Top + _view.LineHeight);
+                        _layer.AddAdornment(AdornmentPositioningBehavior.TextRelative,span,null,letterReference,null);
                     }
                 }
             }
