@@ -20,11 +20,22 @@ namespace AceJump
     /// </summary>
     public partial class LetterReference : UserControl
     {
-        public LetterReference(string referenceLetter)
+        public const int PADDING = 5;
+
+        public LetterReference(string referenceLetter, Rect bounds)
         {
             InitializeComponent();
             this.Content = referenceLetter.ToUpper();
             this.Background = Brushes.GreenYellow;
+
+            // give font some room
+            this.Width = bounds.Width + (PADDING * 2);
+            this.Height = bounds.Height + (PADDING * 2);
+            this.Padding = new Thickness(PADDING);
+
+            // make it stand out
+            this.FontWeight = FontWeights.ExtraBold;
+
         }
     }
 }
