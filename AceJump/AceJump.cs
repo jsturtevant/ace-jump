@@ -79,26 +79,11 @@ namespace AceJump
                     Geometry g = textViewLines.GetMarkerGeometry(span);
                     if (g != null)
                     {
-                        GeometryDrawing drawing = new GeometryDrawing(_brush, _pen, g);
-                        drawing.Freeze();
-
-                        DrawingImage drawingImage = new DrawingImage(drawing);
-                        drawingImage.Freeze();
-
-                        Image image = new Image();
-                        image.Source = drawingImage;
-
-                        //Align the image with the top of the bounds of the text geometry
-                        Canvas.SetLeft(image, g.Bounds.Left);
-                        Canvas.SetTop(image, g.Bounds.Top);
-
-                        _layer.AddAdornment(AdornmentPositioningBehavior.TextRelative, span, null, image, null);
-                        
-                        LetterReference letterReference = new LetterReference(key);
+                        LetterReference letterReference = new LetterReference(key, g.Bounds);
 
                         //Align the image with the top of the bounds of the text geometry
                         Canvas.SetLeft(letterReference, g.Bounds.Left);
-                        Canvas.SetTop(letterReference, g.Bounds.Top + _view.LineHeight);
+                        Canvas.SetTop(letterReference, g.Bounds.Top);
                         _layer.AddAdornment(AdornmentPositioningBehavior.TextRelative,span,null,letterReference,null);
                     }
                 }
