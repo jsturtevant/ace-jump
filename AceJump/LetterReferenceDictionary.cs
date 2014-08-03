@@ -15,6 +15,7 @@ namespace AceJump
         Dictionary<string, SnapshotSpan> dictionary  = new Dictionary<string, SnapshotSpan>();
 
         private char currentLetter = 'A';
+        private string prefix = string.Empty;
 
         public int Count { get
         {
@@ -23,10 +24,40 @@ namespace AceJump
 
         public string AddSpan(SnapshotSpan span)
         {
-            string key = currentLetter.ToString();
+            string key = string.Concat(prefix, currentLetter.ToString());
             this.dictionary.Add(key, span);
-            currentLetter++;
+            
+            this.IncrementKey();
+            
             return key;
+        }
+
+        private void IncrementKey()
+        {
+            // might need to rethink algorithm at some point
+            // but 26*26 = 676 character on one screen which seems sufficient for now.
+            if (this.currentLetter != 'Z')
+            {
+                this.currentLetter++;
+            }
+            else
+            {
+                //reset
+                this.currentLetter = 'A';
+
+                if (string.IsNullOrEmpty(this.prefix))
+                {
+                    //initialize prefix for key
+                    this.prefix = "A";
+                }
+                else
+                {
+                    //increment prefix
+                    char prefixChar = this.prefix.First();
+                    prefixChar++;
+                    this.prefix = (prefixChar).ToString();
+                }
+            }
         }
 
         public SnapshotPoint GetLetterPosition(string key)

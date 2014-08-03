@@ -52,5 +52,32 @@ namespace AceJumpTests
 
              Assert.AreEqual(2, letterReferenceDictionary.Count);
         }
+
+        [TestMethod]
+        public void When_Z_Is_Reached_Key_Goes_To_AA()
+        {
+            // 26 letters in the english alphabet
+            for (int i = 1; i <= 26; i++)
+            {
+                letterReferenceDictionary.AddSpan(new SnapshotSpan());
+            }
+            
+            string key = letterReferenceDictionary.AddSpan(new SnapshotSpan());
+            Assert.AreEqual("AA", key);
+        }
+
+
+        [TestMethod]
+        public void When_ZZ_Is_Reached_Key_Goes_To_BA()
+        {
+            // 26 letters in the english alphabet
+            for (int i = 1; i <= 26*2; i++)
+            {
+                letterReferenceDictionary.AddSpan(new SnapshotSpan());
+            }
+
+            string key = letterReferenceDictionary.AddSpan(new SnapshotSpan());
+            Assert.AreEqual("BA", key);
+        }
     }
 }
