@@ -4,6 +4,8 @@ using System.Windows.Input;
 namespace AceJump
 {
     using  System.Windows;
+
+    using Microsoft.VisualStudio.Text;
     using Microsoft.VisualStudio.Text.Editor;
     using Microsoft.VisualStudio.Text.Formatting;
 
@@ -16,6 +18,8 @@ namespace AceJump
         private IWpfTextView view;
 
         private AceJump aceJump;
+
+        private bool letterdrawn;
 
         public AceJumperControl(IWpfTextView view)
         {
@@ -48,7 +52,20 @@ namespace AceJump
             {
                 this.aceJump = new AceJump(this.view);
             }
-            this.aceJump.SetCurrentLetter(e.Key.ToString());
+
+            if (!this.letterdrawn)
+            {
+                this.aceJump.SetCurrentLetter(e.Key.ToString());
+                letterdrawn = true;
+            }
+            else
+            {
+                SnapshotPoint newCaretPostion = this.aceJump.GetLetterPosition(e.Key.ToString().ToUpper());
+                this.view.Caret.MoveTo(newCaretPostion);
+                this.Close();
+                return;
+            }
+            
         }
 
         protected override void OnClosed(EventArgs e)
