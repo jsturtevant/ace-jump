@@ -30,12 +30,12 @@ namespace AceJump
             this.Top = pointToScreen.X;
             this.Left = pointToScreen.Y;
 
-            this.PreviewKeyDown += new KeyEventHandler(HandleEsc);
+            this.PreviewKeyDown += new KeyEventHandler(this.HandleKeyPress);
 
         }
 
 
-        private void HandleEsc(object sender, KeyEventArgs e)
+        private void HandleKeyPress(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
             {
