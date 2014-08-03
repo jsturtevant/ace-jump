@@ -16,6 +16,10 @@ namespace AceJump
 
         private char currentLetter = 'A';
 
+        public int Count { get
+        {
+            return dictionary.Count;
+        } }
 
         public string AddSpan(SnapshotSpan span)
         {
