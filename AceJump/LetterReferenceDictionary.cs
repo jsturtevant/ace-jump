@@ -1,34 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AceJump
+﻿namespace AceJump
 {
-    using System.Runtime.InteropServices;
-
     using Microsoft.VisualStudio.Text;
+    using System.Collections.Generic;
+    using System.Linq;
 
+    /// <summary>
+    /// Tracks the location of the letters
+    /// </summary>
     public class LetterReferenceDictionary
     {
-        Dictionary<string, SnapshotSpan> dictionary  = new Dictionary<string, SnapshotSpan>();
-
+        readonly Dictionary<string, SnapshotSpan> dictionary = new Dictionary<string, SnapshotSpan>();
         private char currentLetter = 'A';
         private string prefix = string.Empty;
 
-        public int Count { get
+        public int Count
         {
-            return dictionary.Count;
-        } }
+            get
+            {
+                return dictionary.Count;
+            }
+        }
 
         public string AddSpan(SnapshotSpan span)
         {
             string key = string.Concat(prefix, currentLetter.ToString());
             this.dictionary.Add(key, span);
-            
+
             this.IncrementKey();
-            
             return key;
         }
 
@@ -60,12 +58,11 @@ namespace AceJump
             }
         }
 
-        public SnapshotPoint GetLetterPosition(string key)
+        public SnapshotSpan GetLetterPosition(string key)
         {
             SnapshotSpan span;
             this.dictionary.TryGetValue(key, out span);
-
-            return span.Start;
+            return span;
         }
     }
 }

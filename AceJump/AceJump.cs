@@ -99,7 +99,7 @@ namespace AceJump
 
         public SnapshotPoint GetLetterPosition(string key)
         {
-          return this.letterLocationSpans.GetLetterPosition(key);
+          return this.letterLocationSpans.GetLetterPosition(key).Start;
         }
     }
 }
