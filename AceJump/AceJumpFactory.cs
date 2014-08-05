@@ -34,15 +34,15 @@
 
     public class AceKeyProcessor : KeyProcessor
     {
-        private IWpfTextView view;
         private KeyTypeConverter keyTypeConverter;
-        private AceJump aceJump;
+        private NewJumpControler newJumpControler;
 
-        private bool letterHighLightActive;
+        private IWpfTextView view;
 
         public AceKeyProcessor()
         {
             this.keyTypeConverter = new KeyTypeConverter();
+            this.newJumpControler = new NewJumpControler();
         }
 
         public void SetView(IWpfTextView wpfTextView)
@@ -52,12 +52,26 @@
 
         public override void KeyDown(KeyEventArgs args)
         {
-            char? key = this.keyTypeConverter.ConvertToChar(args.Key);
+            char? jumpKey = this.keyTypeConverter.ConvertToChar(args.Key);
+
+            bool handled = newJumpControler.ControlJump(jumpKey, this.view);
+            args.Handled = handled;
+        }
+    }
+
+    public class NewJumpControler
+    {
+        private AceJump aceJump;
+
+        private bool letterHighLightActive;
+
+        public bool ControlJump(char? key, IWpfTextView view)
+        {
             if (key.HasValue && key.Value == '+')
             {
                 if (this.aceJump == null)
                 {
-                    this.aceJump = new AceJump(this.view);
+                    this.aceJump = new AceJump(view);
                     this.aceJump.ShowSelector();
                 }
                 else if (!this.aceJump.Active)
@@ -70,35 +84,33 @@
                 }
 
                 // mark it handled so it doesn't go down to editor
-               args.Handled = true;
-               return;
+                return true;
             }
 
             if (this.aceJump != null && this.aceJump.Active)
             {
                 if (!key.HasValue)
                 {
-                    args.Handled = true;
-                    return;
+                    return true;
                 }
 
                 if (this.letterHighLightActive)
                 {
                     // they have highlighted all letters so they are ready to jump
                     this.aceJump.JumpTo(key.ToString().ToUpper());
-                    args.Handled = true;
                     this.letterHighLightActive = false;
                     this.aceJump.ClearAdornments();
-                    return;
+                    return true;
                 }
                 else
                 {
                     this.aceJump.HighlightLetter(key.ToString().ToUpper());
                     this.letterHighLightActive = true;
-                    args.Handled = true;
-                    return;
+                    return true;
                 }
             }
+
+            return false;
         }
     }
 }
