@@ -14,12 +14,26 @@
         private string letter;
         private readonly LetterReferenceDictionary letterLocationSpans;
 
+        private bool active;
+
         public AceJump(IWpfTextView textView)
         {
             this.textView = textView;
             this.aceLayer = textView.GetAdornmentLayer("AceJump");
 
             letterLocationSpans = new LetterReferenceDictionary();
+        }
+
+        public bool Active
+        {
+            get
+            {
+                return this.active;
+            }
+            private set
+            {
+                this.active = value;
+            }
         }
 
         public void HighlightLetter(string letter)
@@ -64,13 +78,27 @@
 
         public void ClearAdornments()
         {
+            this.Active = false;
             this.letter = string.Empty;
+            this.letterLocationSpans.Reset();
             this.aceLayer.RemoveAllAdornments();
         }
 
         public SnapshotPoint GetLetterPosition(string key)
         {
           return this.letterLocationSpans.GetLetterPosition(key).Start;
+        }
+
+        public void ShowSelector()
+        {
+            int snapshotPoint = textView.Caret.Position.BufferPosition - 1;
+            SnapshotPoint point = new SnapshotPoint(textView.TextSnapshot, snapshotPoint);
+            SnapshotPoint point2 = new SnapshotPoint(textView.TextSnapshot, textView.Caret.Position.BufferPosition);
+
+            var span = new SnapshotSpan(point, point2);
+            AceJumperControl aceJumperControl = new AceJumperControl(this.textView);
+            this.aceLayer.AddAdornment(AdornmentPositioningBehavior.ViewportRelative, span, null, aceJumperControl, null);
+            this.Active = true;
         }
     }
 }
