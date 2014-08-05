@@ -1,48 +1,23 @@
-﻿using System.Windows.Controls;
-using System.Windows.Media;
-using Microsoft.VisualStudio.Text.Editor;
-
-namespace AceJump
+﻿namespace AceJump
 {
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Windows;
-    using System.Windows.Input;
-
-    using EnvDTE;
-
     using Microsoft.VisualStudio.Text;
     using Microsoft.VisualStudio.Text.Formatting;
+    using System.Windows.Controls;
+    using System.Windows.Media;
+    using Microsoft.VisualStudio.Text.Editor;
 
-    /// <summary>
-    /// Adornment class that draws a square box in the top right hand corner of the viewport
-    /// </summary>
     class AceJump
     {
-        IAdornmentLayer _layer;
-        IWpfTextView _view;
-        Brush _brush;
-        Pen _pen;
-
+        private readonly IAdornmentLayer aceLayer;
+        private readonly IWpfTextView textView;
         private string letter;
+        private readonly LetterReferenceDictionary letterLocationSpans;
 
-        private LetterReferenceDictionary letterLocationSpans;
-
-        public AceJump(IWpfTextView view)
+        public AceJump(IWpfTextView textView)
         {
-            _view = view;
-            _layer = view.GetAdornmentLayer("AceJump");
-
-            //Create the pen and brush to color the box behind the a's
-            Brush brush = new SolidColorBrush(Color.FromArgb(0x20, 0x00, 0x00, 0xff));
-            brush.Freeze();
-            Brush penBrush = new SolidColorBrush(Colors.Red);
-            penBrush.Freeze();
-            Pen pen = new Pen(penBrush, 0.5);
-            pen.Freeze();
-
-            _brush = brush;
-            _pen = pen;
+            this.textView = textView;
+            this.aceLayer = textView.GetAdornmentLayer("AceJump");
 
             letterLocationSpans = new LetterReferenceDictionary();
         }
@@ -50,42 +25,38 @@ namespace AceJump
         public void SetCurrentLetter(string letter)
         {
             this.letter = letter;
-
-            foreach (var line in this._view.TextViewLines)
+            foreach (var line in this.textView.TextViewLines)
             {
-                this.CreateVisuals(line);
+                this.CreateVisualsForLetter(line);
             }
-
         }
 
-        /// <summary>
-        /// Within the given line add the scarlet box behind the a
-        /// </summary>
-        private void CreateVisuals(ITextViewLine line)
+        private void CreateVisualsForLetter(ITextViewLine line)
         {
             //grab a reference to the lines in the current TextView 
-            IWpfTextViewLineCollection textViewLines = _view.TextViewLines;
+            IWpfTextViewLineCollection textViewLines = this.textView.TextViewLines;
             int start = line.Start;
             int end = line.End;
 
-            //Loop through each character, and place a box around any a 
+            //Loop through each character, and place a box over item 
             for (int i = start; (i < end); ++i)
             {
-                if (_view.TextSnapshot[i].ToString().ToLower() == this.letter.First().ToString().ToLower())
+                if (this.textView.TextSnapshot[i].ToString().ToLower() == this.letter.First().ToString().ToLower())
                 {
-                    SnapshotSpan span = new SnapshotSpan(_view.TextSnapshot, Span.FromBounds(i, i + 1));
-                    string key = this.letterLocationSpans.AddSpan(span);
+                    var span = new SnapshotSpan(this.textView.TextSnapshot, Span.FromBounds(i, i + 1));
 
                     Geometry g = textViewLines.GetMarkerGeometry(span);
                     if (g != null)
                     {
-                        LetterReference letterReference = new LetterReference(key, g.Bounds);
+                        // save the location of this letter to jump to later
+                        string key = this.letterLocationSpans.AddSpan(span);
 
-                        //Align the image with the top of the bounds of the text geometry
+                        // Align the image with the top of the bounds of the text geometry
+                        var letterReference = new LetterReference(key, g.Bounds);
                         Canvas.SetLeft(letterReference, g.Bounds.Left);
                         Canvas.SetTop(letterReference, g.Bounds.Top);
 
-                        _layer.AddAdornment(AdornmentPositioningBehavior.TextRelative,span,null,letterReference,null);
+                        this.aceLayer.AddAdornment(AdornmentPositioningBehavior.TextRelative,span,null,letterReference,null);
                     }
                 }
             }
@@ -94,7 +65,7 @@ namespace AceJump
         public void ClearAdornments()
         {
             this.letter = string.Empty;
-            _layer.RemoveAllAdornments();
+            this.aceLayer.RemoveAllAdornments();
         }
 
         public SnapshotPoint GetLetterPosition(string key)
