@@ -1,12 +1,8 @@
-﻿using System;
-using System.Windows.Input;
-
-namespace AceJump
+﻿namespace AceJump
 {
-    using  System.Windows;
-    using System.Windows.Controls;
-    using System.Windows.Media;
-
+    using System;
+    using System.Windows;
+    using System.Windows.Input;
     using Microsoft.VisualStudio.Text;
     using Microsoft.VisualStudio.Text.Editor;
     using Microsoft.VisualStudio.Text.Formatting;
@@ -19,25 +15,24 @@ namespace AceJump
     {
         private IWpfTextView view;
         private AceJump aceJump;
-        private bool letterSelectionActive;
+        private bool letterHighLightActive;
 
         public AceJumperControl(IWpfTextView view)
         {
             InitializeComponent();
-
             this.view = view;
             
             this.CreateAdornmentLayer();
             this.SetJumpBoxLocation();
-            this.JumpBox.Focus();
             
+            this.JumpTextBox.Focus();
             this.PreviewKeyDown += new KeyEventHandler(this.HandleKeyPress);
         }
 
         private void SetJumpBoxLocation()
         {
-            // doesn seem to end me up in the right place but close enough
-            // need to figure out a better way
+            // doesn't seem to end up in the right place but close enough for now
+            // TODO need to figure out a better way
             TextBounds characterBounds = view.TextViewLines.GetCharacterBounds(view.Caret.Position.BufferPosition);
             Point point = new Point(view.ViewportTop + characterBounds.Top, view.ViewportLeft + characterBounds.Left);
             Point screenpoint = view.VisualElement.PointToScreen(point);
@@ -49,20 +44,22 @@ namespace AceJump
         {
             if (e.Key == Key.Escape)
             {
-                Close();
+                this.Close();
                 return;
             }
 
-            if (!this.letterSelectionActive)
+            if (this.letterHighLightActive)
             {
-                this.aceJump.SetCurrentLetter(e.Key.ToString());
-                this.letterSelectionActive = true;
-            }
-            else
-            {
+                // they have highlighted all letters so they are ready to jump
                 SnapshotPoint newCaretPostion = this.aceJump.GetLetterPosition(e.Key.ToString().ToUpper());
                 this.view.Caret.MoveTo(newCaretPostion);
                 this.Close();
+                return;
+            }
+            else
+            {
+                this.aceJump.HighlightLetter(e.Key.ToString());
+                this.letterHighLightActive = true;
                 return;
             }
         }
