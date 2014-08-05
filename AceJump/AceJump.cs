@@ -9,19 +9,17 @@
     using System.Windows.Media;
     using Microsoft.VisualStudio.Text.Editor;
 
-    class AceJump
+    public class AceJump
     {
-        private readonly IAdornmentLayer aceLayer;
-        private readonly IWpfTextView textView;
+        private IAdornmentLayer aceLayer;
+        private IWpfTextView textView;
         private string letter;
         private readonly LetterReferenceDictionary letterLocationSpans;
 
         private bool active;
 
-        public AceJump(IWpfTextView textView)
+        public AceJump()
         {
-            this.textView = textView;
-            this.aceLayer = textView.GetAdornmentLayer("AceJump");
 
             letterLocationSpans = new LetterReferenceDictionary();
         }
@@ -133,6 +131,12 @@
             {
                 this.textView.Caret.MoveTo(newCaretPostion);                
             }
+        }
+
+        public void SetView(IWpfTextView wpfTextView)
+        {
+            this.textView = wpfTextView;
+            this.aceLayer = textView.GetAdornmentLayer("AceJump");
         }
     }
 }

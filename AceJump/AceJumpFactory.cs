@@ -13,21 +13,24 @@
     [Name("AceKeyProcessor")]
     internal sealed class AceKeyProcessorProvider : IKeyProcessorProvider
     {
-        public AceKeyProcessorProvider()
-        {
-            this.aceKeyProcessor = new AceKeyProcessor();
-        }
+        private AceKeyProcessor aceKeyProcessor;
+        private AceJump aceJump;
 
         [Export(typeof(AdornmentLayerDefinition))]
         [Name("AceJump")]
         [Order(After = PredefinedAdornmentLayers.Caret)]
         public AdornmentLayerDefinition editorAdornmentLayer = null;
 
-        private AceKeyProcessor aceKeyProcessor;
 
+        public AceKeyProcessorProvider()
+        {
+            this.aceJump = new AceJump();
+            this.aceKeyProcessor = new AceKeyProcessor(this.aceJump);
+        }
+        
         public KeyProcessor GetAssociatedProcessor(IWpfTextView wpfTextView)
         {
-            this.aceKeyProcessor.SetView(wpfTextView);
+            this.aceJump.SetView(wpfTextView);
             return this.aceKeyProcessor;
         }
     }
@@ -37,24 +40,17 @@
         private KeyTypeConverter keyTypeConverter;
         private NewJumpControler newJumpControler;
 
-        private IWpfTextView view;
-
-        public AceKeyProcessor()
+        public AceKeyProcessor(AceJump aceJump)
         {
             this.keyTypeConverter = new KeyTypeConverter();
-            this.newJumpControler = new NewJumpControler();
-        }
-
-        public void SetView(IWpfTextView wpfTextView)
-        {   
-            this.view = wpfTextView;
+            this.newJumpControler = new NewJumpControler(aceJump);
         }
 
         public override void KeyDown(KeyEventArgs args)
         {
             char? jumpKey = this.keyTypeConverter.ConvertToChar(args.Key);
 
-            bool handled = newJumpControler.ControlJump(jumpKey, this.view);
+            bool handled = newJumpControler.ControlJump(jumpKey);
             args.Handled = handled;
         }
     }
@@ -65,22 +61,28 @@
 
         private bool letterHighLightActive;
 
-        public bool ControlJump(char? key, IWpfTextView view)
+        public NewJumpControler(AceJump aceJump)
         {
+            this.aceJump = aceJump;
+        }
+
+        public bool ControlJump(char? key)
+        {
+            if (aceJump == null)
+            {
+                // something didn't get wired up right.  
+                return false;
+            }
+
             if (key.HasValue && key.Value == '+')
             {
-                if (this.aceJump == null)
+                if (this.aceJump.Active)
                 {
-                    this.aceJump = new AceJump(view);
-                    this.aceJump.ShowSelector();
+                        this.aceJump.ClearAdornments();
                 }
-                else if (!this.aceJump.Active)
+                else
                 {
                     this.aceJump.ShowSelector();
-                }
-                else if (this.aceJump.Active)
-                {
-                    this.aceJump.ClearAdornments();
                 }
 
                 // mark it handled so it doesn't go down to editor
