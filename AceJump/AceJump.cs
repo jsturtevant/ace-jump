@@ -1,6 +1,8 @@
 ﻿namespace AceJump
 {
     using System.Linq;
+    using System.Net.Mime;
+
     using Microsoft.VisualStudio.Text;
     using Microsoft.VisualStudio.Text.Formatting;
     using System.Windows.Controls;
@@ -91,14 +93,22 @@
 
         public void ShowSelector()
         {
-            int snapshotPoint = textView.Caret.Position.BufferPosition - 1;
+            int snapshotPoint = textView.Caret.Position.BufferPosition;
             SnapshotPoint point = new SnapshotPoint(textView.TextSnapshot, snapshotPoint);
-            SnapshotPoint point2 = new SnapshotPoint(textView.TextSnapshot, textView.Caret.Position.BufferPosition);
+            SnapshotPoint point2 = new SnapshotPoint(textView.TextSnapshot, snapshotPoint+1);
 
             var span = new SnapshotSpan(point, point2);
-            AceJumperControl aceJumperControl = new AceJumperControl(this.textView);
-            this.aceLayer.AddAdornment(AdornmentPositioningBehavior.ViewportRelative, span, null, aceJumperControl, null);
-            this.Active = true;
+            // Align the image with the top of the bounds of the text geometry
+             Geometry g = textView.TextViewLines.GetMarkerGeometry(span);
+            if (g != null)
+            {
+                AceJumperControl aceJumperControl = new AceJumperControl(this.textView);
+                Canvas.SetLeft(aceJumperControl, g.Bounds.Left);
+                Canvas.SetTop(aceJumperControl, g.Bounds.Top);
+
+                this.aceLayer.AddAdornment(AdornmentPositioningBehavior.ViewportRelative, span, null, aceJumperControl, null);
+                this.Active = true;
+            }
         }
     }
 }
