@@ -93,18 +93,17 @@
 
         public void ShowSelector()
         {
-            int snapshotPoint = textView.Caret.Position.BufferPosition;
-
-            if (textView.Caret.ContainingTextViewLine.End.Position == snapshotPoint)
+            int cursorPoint = textView.Caret.Position.BufferPosition;
+            if (textView.Caret.ContainingTextViewLine.End.Position == cursorPoint)
             {
                 //caret is at end of line back it up one
-                snapshotPoint = snapshotPoint - 1;
+                cursorPoint = cursorPoint - 1;
             }
 
-            SnapshotPoint point = new SnapshotPoint(textView.TextSnapshot, snapshotPoint);
-            SnapshotPoint point2 = new SnapshotPoint(textView.TextSnapshot, snapshotPoint+1);
-
+            SnapshotPoint point = new SnapshotPoint(textView.TextSnapshot, cursorPoint);
+            SnapshotPoint point2 = new SnapshotPoint(textView.TextSnapshot, cursorPoint+1);
             var span = new SnapshotSpan(point, point2);
+            
             // Align the image with the top of the bounds of the text geometry
              Geometry g = textView.TextViewLines.GetMarkerGeometry(span);
             if (g != null)
