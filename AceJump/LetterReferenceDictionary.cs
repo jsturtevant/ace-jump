@@ -9,9 +9,11 @@
     /// </summary>
     public class LetterReferenceDictionary
     {
+        private const char START_LETTER = 'A';
         readonly Dictionary<string, SnapshotSpan> dictionary = new Dictionary<string, SnapshotSpan>();
-        private char currentLetter = 'A';
+        private char currentLetter = START_LETTER;
         private string prefix = string.Empty;
+
 
         public int Count
         {
@@ -41,7 +43,7 @@
             else
             {
                 //reset
-                this.currentLetter = 'A';
+                this.currentLetter = START_LETTER;
 
                 if (string.IsNullOrEmpty(this.prefix))
                 {
@@ -63,6 +65,12 @@
             SnapshotSpan span;
             this.dictionary.TryGetValue(key, out span);
             return span;
+        }
+
+        public void Reset()
+        {
+            this.currentLetter = START_LETTER;
+            this.dictionary.Clear();
         }
     }
 }
