@@ -13,7 +13,8 @@
     /// </summary>
     public partial class AceJumperControl : Window
     {
-        private IWpfTextView view;
+        private readonly KeyTypeConverter keyTypeConverter;
+        private readonly IWpfTextView view;
         private AceJump aceJump;
         private bool letterHighLightActive;
 
@@ -21,6 +22,7 @@
         {
             InitializeComponent();
             this.view = view;
+            this.keyTypeConverter = new KeyTypeConverter();
             
             this.CreateAdornmentLayer();
             this.SetJumpBoxLocation();
@@ -47,18 +49,24 @@
                 this.Close();
                 return;
             }
+            
+            char? key = this.keyTypeConverter.ConvertToChar(e.Key);
+            if (!key.HasValue)
+            {
+                return;
+            }
 
             if (this.letterHighLightActive)
             {
                 // they have highlighted all letters so they are ready to jump
-                SnapshotPoint newCaretPostion = this.aceJump.GetLetterPosition(e.Key.ToString().ToUpper());
+                SnapshotPoint newCaretPostion = this.aceJump.GetLetterPosition(key.ToString().ToUpper());
                 this.view.Caret.MoveTo(newCaretPostion);
                 this.Close();
                 return;
             }
             else
             {
-                this.aceJump.HighlightLetter(e.Key.ToString());
+                this.aceJump.HighlightLetter(key.ToString().ToUpper());
                 this.letterHighLightActive = true;
                 return;
             }

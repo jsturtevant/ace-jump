@@ -22,7 +22,7 @@
             letterLocationSpans = new LetterReferenceDictionary();
         }
 
-        public void SetCurrentLetter(string letter)
+        public void HighlightLetter(string letter)
         {
             this.letter = letter;
             foreach (var line in this.textView.TextViewLines)
