@@ -94,6 +94,13 @@
         public void ShowSelector()
         {
             int snapshotPoint = textView.Caret.Position.BufferPosition;
+
+            if (textView.Caret.ContainingTextViewLine.End.Position == snapshotPoint)
+            {
+                //caret is at end of line back it up one
+                snapshotPoint = snapshotPoint - 1;
+            }
+
             SnapshotPoint point = new SnapshotPoint(textView.TextSnapshot, snapshotPoint);
             SnapshotPoint point2 = new SnapshotPoint(textView.TextSnapshot, snapshotPoint+1);
 
