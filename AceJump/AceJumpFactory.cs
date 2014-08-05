@@ -57,11 +57,11 @@
 
     public class NewJumpControler
     {
-        private AceJump aceJump;
+        private IAceJumpAdornment aceJump;
 
         private bool letterHighLightActive;
 
-        public NewJumpControler(AceJump aceJump)
+        public NewJumpControler(IAceJumpAdornment aceJump)
         {
             this.aceJump = aceJump;
         }

@@ -9,7 +9,16 @@
     using System.Windows.Media;
     using Microsoft.VisualStudio.Text.Editor;
 
-    public class AceJump
+    public interface IAceJumpAdornment
+    {
+        bool Active { get; }
+        void HighlightLetter(string letter);
+        void ClearAdornments();
+        void ShowSelector();
+        void JumpTo(string key);
+    }
+
+    public class AceJump : IAceJumpAdornment
     {
         private IAdornmentLayer aceLayer;
         private IWpfTextView textView;
