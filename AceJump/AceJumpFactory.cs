@@ -85,8 +85,7 @@
                 if (this.letterHighLightActive)
                 {
                     // they have highlighted all letters so they are ready to jump
-                    SnapshotPoint newCaretPostion = this.aceJump.GetLetterPosition(key.ToString().ToUpper());
-                    this.view.Caret.MoveTo(newCaretPostion);
+                    this.aceJump.JumpTo(key.ToString().ToUpper());
                     args.Handled = true;
                     this.letterHighLightActive = false;
                     this.aceJump.ClearAdornments();

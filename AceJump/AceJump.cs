@@ -110,5 +110,23 @@
                 this.Active = true;
             }
         }
+
+        public void JumpTo(string key)
+        {
+            if (string.IsNullOrEmpty(key))
+            {
+                return;
+            }
+
+            SnapshotPoint newCaretPostion = this.GetLetterPosition(key.ToUpper());
+            bool isValidPoint = newCaretPostion.Snapshot == textView.TextSnapshot && 
+                                newCaretPostion.Position >= 0 && 
+                                newCaretPostion.Position <= textView.TextSnapshot.Length;
+
+            if (isValidPoint)
+            {
+                this.textView.Caret.MoveTo(newCaretPostion);                
+            }
+        }
     }
 }
