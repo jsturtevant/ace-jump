@@ -73,11 +73,13 @@
       <DependentUpon>AceJumperControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="AceJumpFactory.cs" />
+    <Compile Include="IAceJumpAdornment.cs" />
     <Compile Include="KeyTypeConverter.cs" />
     <Compile Include="LetterReference.xaml.cs">
       <DependentUpon>LetterReference.xaml</DependentUpon>
     </Compile>
     <Compile Include="LetterReferenceDictionary.cs" />
+    <Compile Include="JumpControler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

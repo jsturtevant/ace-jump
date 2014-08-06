@@ -38,91 +38,20 @@
     public class AceKeyProcessor : KeyProcessor
     {
         private KeyTypeConverter keyTypeConverter;
-        private NewJumpControler newJumpControler;
+        private JumpControler jumpControler;
 
         public AceKeyProcessor(AceJump aceJump)
         {
             this.keyTypeConverter = new KeyTypeConverter();
-            this.newJumpControler = new NewJumpControler(aceJump);
+            this.jumpControler = new JumpControler(aceJump);
         }
 
         public override void KeyDown(KeyEventArgs args)
         {
             char? jumpKey = this.keyTypeConverter.ConvertToChar(args.Key);
 
-            bool handled = newJumpControler.ControlJump(jumpKey);
+            bool handled = this.jumpControler.ControlJump(jumpKey);
             args.Handled = handled;
-        }
-    }
-
-    public class NewJumpControler
-    {
-        private IAceJumpAdornment aceJump;
-
-        private bool letterHighLightActive;
-
-        public NewJumpControler(IAceJumpAdornment aceJump)
-        {
-            this.aceJump = aceJump;
-        }
-
-        public bool ControlJump(char? key)
-        {
-            if (aceJump == null)
-            {
-                // something didn't get wired up right.  
-                return false;
-            }
-
-            if (key.HasValue && key.Value == '+')
-            {
-                this.ShowJumpEditor();
-                
-                // mark it handled so it doesn't go down to editor
-                return true;
-            }
-
-            if (this.aceJump != null && this.aceJump.Active)
-            {
-                if (!key.HasValue)
-                {
-                    return true;
-                }
-
-                if (this.letterHighLightActive)
-                {
-                    this.JumpCursor(key.Value);
-                    return true;
-                }
-                else
-                {
-                    this.aceJump.HighlightLetter(key.ToString().ToUpper());
-                    this.letterHighLightActive = true;
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        private void JumpCursor(char jumpKey)
-        {
-            // they have highlighted all letters so they are ready to jump
-            this.aceJump.JumpTo(jumpKey.ToString().ToUpper());
-            this.letterHighLightActive = false;
-            this.aceJump.ClearAdornments();
-        }
-
-        private void ShowJumpEditor()
-        {
-            if (this.aceJump.Active)
-            {
-                this.aceJump.ClearAdornments();
-            }
-            else
-            {
-                this.aceJump.ShowSelector();
-            }
         }
     }
 }

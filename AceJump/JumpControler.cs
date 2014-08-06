@@ -1,12 +1,12 @@
 namespace AceJump
 {
-    public class NewJumpControler
+    public class JumpControler
     {
         private IAceJumpAdornment aceJump;
 
         private bool letterHighLightActive;
 
-        public NewJumpControler(IAceJumpAdornment aceJump)
+        public JumpControler(IAceJumpAdornment aceJump)
         {
             this.aceJump = aceJump;
         }
