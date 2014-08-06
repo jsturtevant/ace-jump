@@ -36,6 +36,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.Text.Data, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.4.2.1408.0511\lib\net40\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <Choose>
@@ -53,12 +56,16 @@
   <ItemGroup>
     <Compile Include="LetterReferenceDictionaryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="JumpControlerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AceJump\AceJump.csproj">
       <Project>{a7c08663-be71-46d5-afa4-8758323b9238}</Project>
       <Name>AceJump</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
