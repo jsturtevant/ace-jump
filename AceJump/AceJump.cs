@@ -63,7 +63,7 @@
                     if (g != null)
                     {
                         // save the location of this letter to jump to later
-                        string key = this.letterLocationSpans.AddSpan(span);
+                        string key = this.letterLocationSpans.AddSpan(span.Start);
 
                         // Align the image with the top of the bounds of the text geometry
                         var letterReference = new LetterReference(key, g.Bounds);
@@ -84,9 +84,9 @@
             this.aceLayer.RemoveAllAdornments();
         }
 
-        public SnapshotPoint GetLetterPosition(string key)
+        public int GetLetterPosition(string key)
         {
-          return this.letterLocationSpans.GetLetterPosition(key).Start;
+          return this.letterLocationSpans.GetLetterPosition(key);
         }
 
         public void ShowSelector()
@@ -122,14 +122,14 @@
                 return;
             }
 
-            SnapshotPoint newCaretPostion = this.GetLetterPosition(key.ToUpper());
-            bool isValidPoint = newCaretPostion.Snapshot == textView.TextSnapshot && 
-                                newCaretPostion.Position >= 0 && 
-                                newCaretPostion.Position <= textView.TextSnapshot.Length;
+            int newCaretPostion = this.GetLetterPosition(key.ToUpper());
+            bool isValidPoint = newCaretPostion>= 0 && 
+                                newCaretPostion <= textView.TextSnapshot.Length;
 
             if (isValidPoint)
             {
-                this.textView.Caret.MoveTo(newCaretPostion);                
+                SnapshotPoint snapshotPoint = new SnapshotPoint(textView.TextSnapshot, newCaretPostion);
+                this.textView.Caret.MoveTo(snapshotPoint);                
             }
         }
 
