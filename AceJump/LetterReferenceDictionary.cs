@@ -1,5 +1,7 @@
 ﻿namespace AceJump
 {
+    using System.ComponentModel;
+
     using Microsoft.VisualStudio.Text;
     using System.Collections.Generic;
     using System.Linq;
@@ -10,7 +12,7 @@
     public class LetterReferenceDictionary
     {
         private const char START_LETTER = 'A';
-        readonly Dictionary<string, SnapshotSpan> dictionary = new Dictionary<string, SnapshotSpan>();
+        readonly Dictionary<string, int> dictionary = new Dictionary<string, int>();
         private char currentLetter = START_LETTER;
         private string prefix = string.Empty;
 
@@ -23,7 +25,7 @@
             }
         }
 
-        public string AddSpan(SnapshotSpan span)
+        public string AddSpan(int span)
         {
             string key = string.Concat(prefix, currentLetter.ToString());
             this.dictionary.Add(key, span);
@@ -35,7 +37,6 @@
         private void IncrementKey()
         {
             // might need to rethink algorithm at some point
-            // but 26*26 = 676 character on one screen which seems sufficient for now.
             if (this.currentLetter != 'Z')
             {
                 this.currentLetter++;
@@ -48,7 +49,7 @@
                 if (string.IsNullOrEmpty(this.prefix))
                 {
                     //initialize prefix for key
-                    this.prefix = "A";
+                    this.prefix = "X";
                 }
                 else
                 {
@@ -60,9 +61,9 @@
             }
         }
 
-        public SnapshotSpan GetLetterPosition(string key)
+        public int GetLetterPosition(string key)
         {
-            SnapshotSpan span;
+            int span;
             this.dictionary.TryGetValue(key, out span);
             return span;
         }
@@ -71,6 +72,30 @@
         {
             this.currentLetter = START_LETTER;
             this.dictionary.Clear();
+        }
+
+        public static LetterReferenceDictionary CreateJumps(List<int> foundKeyLocations, int cursorlocation)
+        {
+            // ignore current location
+            var lessThanCursor = new Stack<int>( foundKeyLocations.Where(l => l < cursorlocation));
+            var moreThanCursor = new Stack<int>( foundKeyLocations.Where(l => l > cursorlocation).OrderByDescending(i => i));
+
+            LetterReferenceDictionary letterReferenceDictionary = new LetterReferenceDictionary();
+
+            for (var i = 0; i< foundKeyLocations.Count(); i++)
+            {
+                if (lessThanCursor.Any())
+                {
+                    letterReferenceDictionary.AddSpan(lessThanCursor.Pop());
+                }
+                if (moreThanCursor.Any())
+                {
+                    letterReferenceDictionary.AddSpan(moreThanCursor.Pop());
+                }
+            }
+
+
+            return letterReferenceDictionary;
         }
     }
 }
