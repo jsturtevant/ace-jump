@@ -25,8 +25,10 @@
 
         private readonly int listOffset;
 
-        public LetterReferenceDictionary(int numberOfGroups)
+        public LetterReferenceDictionary(int totalLocations)
         {
+            var numberOfGroups = (int)Math.Ceiling(totalLocations / (double)26);
+
             // the offset for the alphabet is number of groups -1
             // if groupgs =1 then a-Z. if groups = 2 then a-y and so on.
             this.listOffset = numberOfGroups - 1;
@@ -90,21 +92,6 @@
         {
             this.currentLetter = START_LETTER;
             this.dictionary.Clear();
-        }
-
-
-        public static LetterReferenceDictionary CreateJumps(List<int> foundKeyLocations)
-        {
-            var numberOfGroups = (int)Math.Ceiling(foundKeyLocations.Count / (double)26);
-
-            var letterDictionary = new LetterReferenceDictionary(numberOfGroups);
-
-            foreach (var keyLocation in foundKeyLocations)
-            {
-                letterDictionary.AddSpan(keyLocation);
-            }
-
-            return letterDictionary;
         }
     }
 }
