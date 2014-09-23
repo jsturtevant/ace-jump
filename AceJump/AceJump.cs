@@ -38,6 +38,8 @@
             }
         }
 
+        public char? OffsetKey { get; private set; }
+
         public void HighlightLetter(string letterTofind)
         {
             this.letter = letterTofind.First().ToString().ToLower();
@@ -46,6 +48,7 @@
                 .Count(c => c.ToString().ToLower() == this.letter);
 
             this.letterLocationSpans = new LetterReferenceDictionary(totalLocations);
+            this.OffsetKey = this.letterLocationSpans.OffsetKey;
             foreach (var line in this.textView.TextViewLines)
             {
                 this.CreateVisualsForLetter(line);

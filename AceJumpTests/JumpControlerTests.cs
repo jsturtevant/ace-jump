@@ -19,6 +19,8 @@ namespace AceJumpTests
         {
             this.adornmentMock = new Mock<IAceJumpAdornment>();
             this.controler = new JumpControler(this.adornmentMock.Object);
+
+            adornmentMock.Setup(a => a.OffsetKey).Returns(() =>null);
         }
 
         [TestMethod]
@@ -74,11 +76,28 @@ namespace AceJumpTests
         public void if_first_press_then_highlight()
         {
             adornmentMock.Setup(a => a.Active).Returns(true);
+          
 
             // first time activates letters to jump to
             var handled = controler.ControlJump('a');
 
             adornmentMock.Verify(a => a.HighlightLetter("A"), Times.Once);
+            Assert.IsTrue(handled);
+        }
+
+
+        [TestMethod]
+        public void if_second_press_and_multplekey_selector_then_wait()
+        {
+            adornmentMock.Setup(a => a.Active).Returns(true);
+            adornmentMock.Setup(a => a.OffsetKey).Returns('X');
+
+            // first time activates letters to jump to
+            var handled = controler.ControlJump('a');
+            handled = controler.ControlJump('X');
+
+            adornmentMock.Verify(a => a.JumpTo("B"), Times.Never);
+            adornmentMock.Verify(a => a.ClearAdornments(), Times.Never);
             Assert.IsTrue(handled);
         }
     }
