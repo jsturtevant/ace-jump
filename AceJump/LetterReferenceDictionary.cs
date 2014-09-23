@@ -1,7 +1,11 @@
 ﻿namespace AceJump
 {
+    using System;
     using System.ComponentModel;
 
+    using EnvDTE;
+
+    using Microsoft.VisualStudio.Shell;
     using Microsoft.VisualStudio.Text;
     using System.Collections.Generic;
     using System.Linq;
@@ -12,10 +16,21 @@
     public class LetterReferenceDictionary
     {
         private const char START_LETTER = 'A';
-        readonly Dictionary<string, int> dictionary = new Dictionary<string, int>();
+
+        private readonly Dictionary<string, int> dictionary = new Dictionary<string, int>();
+
         private char currentLetter = START_LETTER;
+
         private string prefix = string.Empty;
 
+        private readonly int listOffset;
+
+        public LetterReferenceDictionary(int numberOfGroups)
+        {
+            // the offset for the alphabet is number of groups -1
+            // if groupgs =1 then a-Z. if groups = 2 then a-y and so on.
+            this.listOffset = numberOfGroups - 1;
+        }
 
         public int Count
         {
@@ -36,35 +51,38 @@
 
         private void IncrementKey()
         {
-            // might need to rethink algorithm at some point
+            if (this.listOffset > 0)
+            {
+                if (this.currentLetter == 'Z' - this.listOffset && string.IsNullOrEmpty(this.prefix))
+                {
+                    // then set prefix
+                    this.currentLetter = START_LETTER;
+                    this.prefix = "Z";
+                    return;
+                }
+            }
+
             if (this.currentLetter != 'Z')
             {
                 this.currentLetter++;
             }
             else
             {
-                //reset
+                // reset
                 this.currentLetter = START_LETTER;
-
-                if (string.IsNullOrEmpty(this.prefix))
-                {
-                    //initialize prefix for key
-                    this.prefix = "X";
-                }
-                else
-                {
-                    //increment prefix
-                    char prefixChar = this.prefix.First();
-                    prefixChar++;
-                    this.prefix = (prefixChar).ToString();
-                }
+              
+                // decrement prefix
+                if (string.IsNullOrEmpty(this.prefix)) this.prefix = "Z";
+                char prefixChar = this.prefix.First();
+                prefixChar--;
+                this.prefix = (prefixChar).ToString();
             }
         }
 
         public int GetLetterPosition(string key)
         {
             int span;
-            this.dictionary.TryGetValue(key, out span);
+            this.dictionary.TryGetValue(key.ToUpper(), out span);
             return span;
         }
 
@@ -74,28 +92,19 @@
             this.dictionary.Clear();
         }
 
-        public static LetterReferenceDictionary CreateJumps(List<int> foundKeyLocations, int cursorlocation)
+
+        public static LetterReferenceDictionary CreateJumps(List<int> foundKeyLocations)
         {
-            // ignore current location
-            var lessThanCursor = new Stack<int>( foundKeyLocations.Where(l => l < cursorlocation));
-            var moreThanCursor = new Stack<int>( foundKeyLocations.Where(l => l > cursorlocation).OrderByDescending(i => i));
+            var numberOfGroups = (int)Math.Ceiling(foundKeyLocations.Count / (double)26);
 
-            LetterReferenceDictionary letterReferenceDictionary = new LetterReferenceDictionary();
+            var letterDictionary = new LetterReferenceDictionary(numberOfGroups);
 
-            for (var i = 0; i< foundKeyLocations.Count(); i++)
+            foreach (var keyLocation in foundKeyLocations)
             {
-                if (lessThanCursor.Any())
-                {
-                    letterReferenceDictionary.AddSpan(lessThanCursor.Pop());
-                }
-                if (moreThanCursor.Any())
-                {
-                    letterReferenceDictionary.AddSpan(moreThanCursor.Pop());
-                }
+                letterDictionary.AddSpan(keyLocation);
             }
 
-
-            return letterReferenceDictionary;
+            return letterDictionary;
         }
     }
 }
