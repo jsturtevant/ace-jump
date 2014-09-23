@@ -34,6 +34,11 @@ namespace AceJump
                     return true;
                 }
 
+                if (key.Value == this.aceJump.OffsetKey)
+                {
+                    return true;
+                }
+
                 if (this.letterHighLightActive)
                 {
                     this.JumpCursor(key.Value);

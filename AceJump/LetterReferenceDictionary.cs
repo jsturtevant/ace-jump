@@ -42,6 +42,18 @@
             }
         }
 
+        public char? OffsetKey
+        {
+            get
+            {
+                if (this.listOffset == 0)
+                {
+                    return null;
+                }
+                return (char)('Z' - this.listOffset);
+            }
+        }
+
         public string AddSpan(int span)
         {
             string key = string.Concat(prefix, currentLetter.ToString());
