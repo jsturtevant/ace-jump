@@ -14,14 +14,16 @@
         private IAdornmentLayer aceLayer;
         private IWpfTextView textView;
         private string letter;
-        private readonly LetterReferenceDictionary letterLocationSpans;
+     
 
         private bool active;
+
+        private LetterReferenceDictionary letterLocationSpans;
 
         public AceJump()
         {
 
-            letterLocationSpans = new LetterReferenceDictionary(1);
+
         }
 
         public bool Active
@@ -36,9 +38,14 @@
             }
         }
 
-        public void HighlightLetter(string letter)
+        public void HighlightLetter(string letterTofind)
         {
-            this.letter = letter;
+            this.letter = letterTofind.First().ToString().ToLower();
+            
+            int totalLocations = this.textView.TextSnapshot.GetText()
+                .Count(c => c.ToString().ToLower() == this.letter);
+
+            this.letterLocationSpans = new LetterReferenceDictionary(totalLocations);
             foreach (var line in this.textView.TextViewLines)
             {
                 this.CreateVisualsForLetter(line);
@@ -55,14 +62,14 @@
             //Loop through each character, and place a box over item 
             for (int i = start; (i < end); ++i)
             {
-                if (this.textView.TextSnapshot[i].ToString().ToLower() == this.letter.First().ToString().ToLower())
+                if (this.textView.TextSnapshot[i].ToString().ToLower() == this.letter)
                 {
                     var span = new SnapshotSpan(this.textView.TextSnapshot, Span.FromBounds(i, i + 1));
                     
                     Geometry g = textViewLines.GetMarkerGeometry(span);
                     if (g != null)
                     {
-                        // save the location of this letter to jump to later
+                        // save the location of this letterTofind to jump to later
                         string key = this.letterLocationSpans.AddSpan(span.Start);
 
                         // Align the image with the top of the bounds of the text geometry
