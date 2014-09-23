@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AceJumpTests
 {
@@ -7,130 +6,99 @@ namespace AceJumpTests
 
     using AceJump;
 
-    using Microsoft.VisualStudio.Text;
-
-    using Moq;
-
     [TestClass]
     public class LetterReferenceDictionaryTests
     {
-        private LetterReferenceDictionary letterReferenceDictionary;
-
-        private Mock<ITextSnapshot> textsnapshotMock;
-
-        [TestInitialize]
-        public void BeforeEachTest()
+      [TestMethod]
+        public void if_found_locations_than_Z_then_A_Z()
         {
-            this.letterReferenceDictionary = new LetterReferenceDictionary();
-            this.textsnapshotMock = new Mock<ITextSnapshot>();
+            //26 is a-z
+            List<int> foundKeyLocations = CreateLocations(26);
+
+            LetterReferenceDictionary dictionary = LetterReferenceDictionary.CreateJumps(foundKeyLocations);
+
+            Assert.AreEqual(1, dictionary.GetLetterPosition("A"));
+            Assert.AreEqual(2, dictionary.GetLetterPosition("B"));
+            Assert.AreEqual(26, dictionary.GetLetterPosition("Z"));
         }
 
-        [TestMethod]
-        public void if_found_locations_all_less_than_cursor_location_A_through_B()
+        private static List<int> CreateLocations(int numberOflocations)
         {
             List<int> foundKeyLocations = new List<int>();
-            foundKeyLocations.Add(1);
-            foundKeyLocations.Add(2);
-
-            int cursorlocation = 3;
-            LetterReferenceDictionary dictionary = LetterReferenceDictionary.CreateJumps(foundKeyLocations, cursorlocation);
-
-            Assert.AreEqual(2, dictionary.GetLetterPosition("A"));
-            Assert.AreEqual(1, dictionary.GetLetterPosition("B"));
-        }
-
-        [TestMethod]
-        public void if_found_locations_all_more_than_cursor_location_A_through_B()
-        {
-            List<int> foundKeyLocations = new List<int>();
-            foundKeyLocations.Add(4);
-            foundKeyLocations.Add(5);
-
-            int cursorlocation = 3;
-            LetterReferenceDictionary dictionary = LetterReferenceDictionary.CreateJumps(foundKeyLocations, cursorlocation);
-
-            Assert.AreEqual(4, dictionary.GetLetterPosition("A"));
-            Assert.AreEqual(5, dictionary.GetLetterPosition("B"));
-        }
-
-        [TestMethod]
-        public void if_found_Locations_span_alternate_A_B_From_curso_Location()
-        {
-            List<int> foundKeyLocations = new List<int>();
-            foundKeyLocations.Add(1);
-            foundKeyLocations.Add(2);
-            foundKeyLocations.Add(4);
-            foundKeyLocations.Add(5);
-
-            int cursorlocation = 3;
-            LetterReferenceDictionary dictionary = LetterReferenceDictionary.CreateJumps(foundKeyLocations, cursorlocation);
-
-            Assert.AreEqual(2, dictionary.GetLetterPosition("A"));
-            Assert.AreEqual(4, dictionary.GetLetterPosition("B"));
-            Assert.AreEqual(1, dictionary.GetLetterPosition("C"));
-            Assert.AreEqual(5, dictionary.GetLetterPosition("D"));
-        }
-
-        [TestMethod]
-        public void First_Add_Returns_Key_A()
-        {
-            string key = letterReferenceDictionary.AddSpan(1);
-
-            Assert.AreEqual("A", key);
-        }
-
-        [TestMethod]
-        public void Third_Add_Returns_Key_C()
-        {
-            letterReferenceDictionary.AddSpan(1);
-            letterReferenceDictionary.AddSpan(2);
-            string key = letterReferenceDictionary.AddSpan(2);
-
-            Assert.AreEqual("C", key);
-        }
-
-        [TestMethod]
-        public void Add_Adds_Item_To_Dictionary()
-        {
-            letterReferenceDictionary.AddSpan(4);
-
-            Assert.AreEqual(1, letterReferenceDictionary.Count);
-        }
-
-        [TestMethod]
-        public void When_Two_Items_Added_Count_Is_two()
-        {
-            letterReferenceDictionary.AddSpan(4);
-            letterReferenceDictionary.AddSpan(4);
-
-             Assert.AreEqual(2, letterReferenceDictionary.Count);
-        }
-
-        [TestMethod]
-        public void When_Z_Is_Reached_Key_Goes_To_XA()
-        {
-            // 26 letters in the english alphabet
-            for (int i = 1; i <= 26; i++)
+            for (int i = 1; i <= numberOflocations; i++)
             {
-                letterReferenceDictionary.AddSpan(4);
-            }
-            
-            string key = letterReferenceDictionary.AddSpan(4);
-            Assert.AreEqual("XA", key);
-        }
-
-
-        [TestMethod]
-        public void When_ZZ_Is_Reached_Key_Goes_To_YA()
-        {
-            // 26 letters in the english alphabet
-            for (int i = 1; i <= 26*2; i++)
-            {
-                letterReferenceDictionary.AddSpan(4);
+                foundKeyLocations.Add(i);
             }
 
-            string key = letterReferenceDictionary.AddSpan(4);
-            Assert.AreEqual("YA", key);
+            return foundKeyLocations;
         }
+
+        [TestMethod]
+        public void if_found_locations_greater_than_z_then_ZA()
+        {
+            // one more than z
+            List<int> foundKeyLocations = CreateLocations(27);
+
+            LetterReferenceDictionary dictionary = LetterReferenceDictionary.CreateJumps(foundKeyLocations);
+
+            Assert.AreEqual(1, dictionary.GetLetterPosition("A"));
+            Assert.AreEqual(25, dictionary.GetLetterPosition("Y"));
+            Assert.AreEqual(26, dictionary.GetLetterPosition("ZA"));
+            Assert.AreEqual(27, dictionary.GetLetterPosition("ZB"));
+        }
+
+        [TestMethod]
+        public void if_found_location_52_then_ZZ()
+        {
+            // one more than z
+            List<int> foundKeyLocations = CreateLocations(52);
+
+            LetterReferenceDictionary dictionary = LetterReferenceDictionary.CreateJumps(foundKeyLocations);
+
+            Assert.AreEqual(1, dictionary.GetLetterPosition("A"));
+            Assert.AreEqual(25, dictionary.GetLetterPosition("Y"));
+            Assert.AreEqual(26, dictionary.GetLetterPosition("ZA")); //would have been z
+            Assert.AreEqual(27, dictionary.GetLetterPosition("ZB"));
+            Assert.AreEqual(28, dictionary.GetLetterPosition("ZC"));
+            Assert.AreEqual(51, dictionary.GetLetterPosition("ZZ"));
+            Assert.AreEqual(52, dictionary.GetLetterPosition("YA"));
+        }
+
+        [TestMethod]
+        public void if_found_location_53_then_YB()
+        {
+            // one more than z
+            List<int> foundKeyLocations = CreateLocations(53);
+
+            LetterReferenceDictionary dictionary = LetterReferenceDictionary.CreateJumps(foundKeyLocations);
+
+            Assert.AreEqual(1, dictionary.GetLetterPosition("A"));
+            Assert.AreEqual(24, dictionary.GetLetterPosition("X"));
+            Assert.AreEqual(25, dictionary.GetLetterPosition("ZA"));  //would have been y
+            Assert.AreEqual(26, dictionary.GetLetterPosition("ZB"));
+            Assert.AreEqual(27, dictionary.GetLetterPosition("ZC"));
+            Assert.AreEqual(28, dictionary.GetLetterPosition("ZD"));
+            Assert.AreEqual(50, dictionary.GetLetterPosition("ZZ"));
+            Assert.AreEqual(51, dictionary.GetLetterPosition("YA"));
+            Assert.AreEqual(52, dictionary.GetLetterPosition("YB"));
+            Assert.AreEqual(53, dictionary.GetLetterPosition("YC"));
+        }
+
+        [TestMethod]
+        public void if_found_location_78_then_X()
+        {
+            // one more than z
+            List<int> foundKeyLocations = CreateLocations(26*3+1);
+
+            LetterReferenceDictionary dictionary = LetterReferenceDictionary.CreateJumps(foundKeyLocations);
+
+            Assert.AreEqual(1, dictionary.GetLetterPosition("A"));
+            Assert.AreEqual(23, dictionary.GetLetterPosition("W"));
+            Assert.AreEqual(24, dictionary.GetLetterPosition("ZA"));  // would have been x
+            Assert.AreEqual(25, dictionary.GetLetterPosition("ZB"));  
+            Assert.AreEqual(52, dictionary.GetLetterPosition("YC"));
+            Assert.AreEqual(76, dictionary.GetLetterPosition("XA"));
+        }
+
     }
 }

@@ -21,7 +21,7 @@
         public AceJump()
         {
 
-            letterLocationSpans = new LetterReferenceDictionary();
+            letterLocationSpans = new LetterReferenceDictionary(1);
         }
 
         public bool Active
@@ -58,7 +58,7 @@
                 if (this.textView.TextSnapshot[i].ToString().ToLower() == this.letter.First().ToString().ToLower())
                 {
                     var span = new SnapshotSpan(this.textView.TextSnapshot, Span.FromBounds(i, i + 1));
-
+                    
                     Geometry g = textViewLines.GetMarkerGeometry(span);
                     if (g != null)
                     {
@@ -72,6 +72,8 @@
 
                         this.aceLayer.AddAdornment(AdornmentPositioningBehavior.TextRelative,span,null,letterReference,null);
                     }
+
+
                 }
             }
         }
