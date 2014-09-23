@@ -19,7 +19,7 @@
             this.Background = Brushes.GreenYellow;
 
             // give letter some room
-            this.Width = bounds.Width + (PADDING * 2);
+            this.Width = (bounds.Width * referenceLetter.Length) + (PADDING * 2);
             this.Height = bounds.Height + (PADDING * 2);
             this.Padding = new Thickness(PADDING);
 
