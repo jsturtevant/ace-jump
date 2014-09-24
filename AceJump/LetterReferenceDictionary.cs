@@ -50,7 +50,7 @@
                 {
                     return null;
                 }
-                return (char)('Z' - this.listOffset);
+                return (char)('Z' - this.listOffset +1);
             }
         }
 

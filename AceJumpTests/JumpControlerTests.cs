@@ -100,5 +100,37 @@ namespace AceJumpTests
             adornmentMock.Verify(a => a.ClearAdornments(), Times.Never);
             Assert.IsTrue(handled);
         }
+
+        [TestMethod]
+        public void if_Third_press_after_multplekey_selector_then_jump()
+        {
+            adornmentMock.Setup(a => a.Active).Returns(true);
+            adornmentMock.Setup(a => a.OffsetKey).Returns('X');
+
+            // first time activates letters to jump to
+            var handled = controler.ControlJump('a');
+            handled = controler.ControlJump('X');
+            handled = controler.ControlJump('b');
+
+            adornmentMock.Verify(a => a.JumpTo("XB"), Times.Once);
+            adornmentMock.Verify(a => a.ClearAdornments(), Times.Once);
+            Assert.IsTrue(handled);
+        }
+
+        [TestMethod]
+        public void if_Third_press_is_multikeyselector_after_multplekey_selector_then_jump()
+        {
+            adornmentMock.Setup(a => a.Active).Returns(true);
+            adornmentMock.Setup(a => a.OffsetKey).Returns('X');
+
+            // first time activates letters to jump to
+            var handled = controler.ControlJump('a');
+            handled = controler.ControlJump('X');
+            handled = controler.ControlJump('X');
+
+            adornmentMock.Verify(a => a.JumpTo("XX"), Times.Once);
+            adornmentMock.Verify(a => a.ClearAdornments(), Times.Once);
+            Assert.IsTrue(handled);
+        }
     }
 }
