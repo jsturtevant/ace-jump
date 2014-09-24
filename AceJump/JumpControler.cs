@@ -25,14 +25,6 @@ namespace AceJump
                 return false;
             }
 
-            if (key.HasValue && key.Value == '+')
-            {
-                this.ShowJumpEditor();
-
-                // mark it handled so it doesn't go down to editor
-                return true;
-            }
-
             if (this.aceJump != null && this.aceJump.Active)
             {
                 if (!key.HasValue)
@@ -80,7 +72,7 @@ namespace AceJump
             this.aceJump.ClearAdornments();
         }
 
-        private void ShowJumpEditor()
+        public void ShowJumpEditor()
         {
             if (this.aceJump.Active)
             {

@@ -33,20 +33,18 @@ namespace AceJumpTests
         [TestMethod]
         public void if_jumper_short_cut_pressed_call_show_jumper()
         {
-            var handled = controler.ControlJump('+');
+            controler.ShowJumpEditor();
 
             adornmentMock.Verify(a => a.ShowSelector(), Times.Once());
-            Assert.IsTrue(handled);
         }
 
         [TestMethod]
         public void if_jumper_short_cut_pressed_calls_clear_Adroments()
         {
             adornmentMock.Setup(a => a.Active).Returns(true);
-            var handled = controler.ControlJump('+');
+             controler.ShowJumpEditor();
 
             adornmentMock.Verify(a => a.ClearAdornments(), Times.Once());
-            Assert.IsTrue(handled);
         }
 
         [TestMethod]
