@@ -1,10 +1,16 @@
 namespace AceJump
 {
+    using System;
+
     public class JumpControler
     {
         private IAceJumpAdornment aceJump;
 
         private bool letterHighLightActive;
+
+        private char previouskeypress;
+
+        private bool offsetKeyPressed = false;
 
         public JumpControler(IAceJumpAdornment aceJump)
         {
@@ -22,7 +28,7 @@ namespace AceJump
             if (key.HasValue && key.Value == '+')
             {
                 this.ShowJumpEditor();
-                
+
                 // mark it handled so it doesn't go down to editor
                 return true;
             }
@@ -34,14 +40,24 @@ namespace AceJump
                     return true;
                 }
 
-                if (key.Value == this.aceJump.OffsetKey)
-                {
-                    return true;
-                }
-
                 if (this.letterHighLightActive)
                 {
-                    this.JumpCursor(key.Value);
+                    if (Char.ToUpper(key.Value) >= this.aceJump.OffsetKey &&
+                         !this.offsetKeyPressed)
+                    {
+                        this.offsetKeyPressed = true;
+                        this.previouskeypress = key.Value;
+                        return true;
+                    }
+
+                    if (this.offsetKeyPressed)
+                    {
+                        this.JumpCursor(string.Format("{0}{1}", this.previouskeypress, key.Value));
+                    }
+                    else
+                    {
+                        this.JumpCursor(key.Value.ToString());
+                    }
                     return true;
                 }
                 else
@@ -55,11 +71,12 @@ namespace AceJump
             return false;
         }
 
-        private void JumpCursor(char jumpKey)
+        private void JumpCursor(string jumpKey)
         {
             // they have highlighted all letters so they are ready to jump
-            this.aceJump.JumpTo(jumpKey.ToString().ToUpper());
+            this.aceJump.JumpTo(jumpKey.ToUpper());
             this.letterHighLightActive = false;
+            this.offsetKeyPressed = false;
             this.aceJump.ClearAdornments();
         }
 
