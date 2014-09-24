@@ -1,5 +1,6 @@
 ﻿namespace AceJump
 {
+    using System;
     using System.Windows.Input;
     using System.ComponentModel.Composition;
 
@@ -48,6 +49,16 @@
 
         public override void KeyDown(KeyEventArgs args)
         {
+            if (Keyboard.IsKeyDown(Key.OemSemicolon) && 
+                Keyboard.IsKeyDown(Key.LeftCtrl) && 
+                Keyboard.IsKeyDown(Key.LeftAlt))
+            {
+                this.jumpControler.ShowJumpEditor();
+                args.Handled = true;
+                return;
+            }
+            
+            
             char? jumpKey = this.keyTypeConverter.ConvertToChar(args.Key);
 
             bool handled = this.jumpControler.ControlJump(jumpKey);
