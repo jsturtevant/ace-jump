@@ -14,25 +14,18 @@
     [Name("AceKeyProcessor")]
     internal sealed class AceKeyProcessorProvider : IKeyProcessorProvider
     {
-        private AceKeyProcessor aceKeyProcessor;
-        private AceJump aceJump;
-
         [Export(typeof(AdornmentLayerDefinition))]
         [Name("AceJump")]
         [Order(After = PredefinedAdornmentLayers.Caret)]
         public AdornmentLayerDefinition editorAdornmentLayer = null;
 
-
-        public AceKeyProcessorProvider()
-        {
-            this.aceJump = new AceJump();
-            this.aceKeyProcessor = new AceKeyProcessor(this.aceJump);
-        }
-        
         public KeyProcessor GetAssociatedProcessor(IWpfTextView wpfTextView)
         {
-            this.aceJump.SetView(wpfTextView);
-            return this.aceKeyProcessor;
+            var aceJump = new AceJump();
+            var aceKeyProcessor = new AceKeyProcessor(aceJump);
+
+            aceJump.SetView(wpfTextView);
+            return aceKeyProcessor;
         }
     }
 
@@ -57,7 +50,6 @@
                 args.Handled = true;
                 return;
             }
-            
             
             char? jumpKey = this.keyTypeConverter.ConvertToChar(args.Key);
 
