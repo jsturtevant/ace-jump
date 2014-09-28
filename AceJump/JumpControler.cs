@@ -67,6 +67,11 @@ namespace AceJump
         {
             // they have highlighted all letters so they are ready to jump
             this.aceJump.JumpTo(jumpKey.ToUpper());
+            this.Close();
+        }
+
+        public void Close()
+        {
             this.letterHighLightActive = false;
             this.offsetKeyPressed = false;
             this.aceJump.ClearAdornments();
@@ -76,7 +81,7 @@ namespace AceJump
         {
             if (this.aceJump.Active)
             {
-                this.aceJump.ClearAdornments();
+                this.Close();
             }
             else
             {
