@@ -92,7 +92,8 @@
         {
             this.Active = false;
             this.letter = string.Empty;
-            this.letterLocationSpans.Reset();
+            if (this.letterLocationSpans != null)
+                this.letterLocationSpans.Reset();
             this.aceLayer.RemoveAllAdornments();
         }
 
