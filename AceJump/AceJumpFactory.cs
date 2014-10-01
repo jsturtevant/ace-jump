@@ -1,12 +1,9 @@
 ﻿namespace AceJump
 {
-    using System;
     using System.Linq;
     using System.Windows.Input;
     using System.ComponentModel.Composition;
 
-    using Microsoft.VisualStudio.Shell.Events;
-    using Microsoft.VisualStudio.Text;
     using Microsoft.VisualStudio.Text.Editor;
     using Microsoft.VisualStudio.Utilities;
 
@@ -21,6 +18,7 @@
         [Order(After = PredefinedAdornmentLayers.Caret)]
         public AdornmentLayerDefinition editorAdornmentLayer = null;
 
+
         public KeyProcessor GetAssociatedProcessor(IWpfTextView wpfTextView)
         {
             var aceJump = new AceJump();
@@ -33,20 +31,28 @@
 
     public class AceKeyProcessor : KeyProcessor
     {
-        private KeyConverter keyConverter;
+
         private JumpControler jumpControler;
 
         public AceKeyProcessor(AceJump aceJump)
         {
-
             this.jumpControler = new JumpControler(aceJump);
         }
 
-
+        public override void PreviewKeyUp(KeyEventArgs args)
+        {
+            if (this.jumpControler.Active())
+            {
+                if (args.Key == Key.Escape || args.Key == Key.Left || args.Key == Key.Right || args.Key == Key.Up || args.Key == Key.Down)
+                {
+                    this.jumpControler.Close();
+                }
+            }
+            base.KeyDown(args);
+        }
 
         public override void KeyDown(KeyEventArgs args)
         {
-
             if (Keyboard.IsKeyDown(Key.OemSemicolon) && Keyboard.IsKeyDown(Key.LeftCtrl)
                 && Keyboard.IsKeyDown(Key.LeftAlt))
             {
@@ -59,11 +65,10 @@
             if (!string.IsNullOrEmpty(key))
             {
                 bool handled = this.jumpControler.ControlJump(key.FirstOrDefault());
+
                 args.Handled = handled;
             }
-
         }
     }
-
-   
 }
+    

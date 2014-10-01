@@ -70,6 +70,11 @@ namespace AceJump
             this.Close();
         }
 
+        public bool Active()
+        {
+            return this.aceJump.Active;
+        }
+
         public void Close()
         {
             this.letterHighLightActive = false;
