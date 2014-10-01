@@ -39,6 +39,7 @@ namespace AceJump
                     {
                         this.offsetKeyPressed = true;
                         this.previouskeypress = key.Value;
+                        this.aceJump.UpdateLetter(key.Value.ToString());
                         return true;
                     }
 

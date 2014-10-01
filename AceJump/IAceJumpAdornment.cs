@@ -7,6 +7,7 @@
         char? OffsetKey { get;  }
 
         void HighlightLetter(string letter);
+        void UpdateLetter(string ch);
         void ClearAdornments();
         void ShowSelector();
         void JumpTo(string key);

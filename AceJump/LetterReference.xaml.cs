@@ -25,6 +25,11 @@
 
             // make it stand out
             this.FontWeight = FontWeights.ExtraBold;
+        public void UpdateHighlight(string referenceLetter)
+        {
+            string s = (string)this.Content;
+            if (s.StartsWith(referenceLetter.ToUpper()))
+                this.Background = Brushes.Yellow;
         }
     }
 }

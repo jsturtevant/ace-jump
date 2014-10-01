@@ -55,6 +55,19 @@
             }
         }
 
+        public void UpdateLetter(string ch)
+        {
+            for (int i = 0; i<this.aceLayer.Elements.Count; i++)
+            {
+                //
+                if (this.aceLayer.Elements[i].Adornment is LetterReference == false)
+                    continue;
+
+                LetterReference letterReference = (LetterReference)this.aceLayer.Elements[i].Adornment;
+                letterReference.UpdateHighlight(ch);
+            }
+        }
+
         private void CreateVisualsForLetter(ITextViewLine line)
         {
             //grab a reference to the lines in the current TextView 
