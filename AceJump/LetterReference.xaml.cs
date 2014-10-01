@@ -9,22 +9,26 @@
     /// </summary>
     public partial class LetterReference : UserControl
     {
-        public const int PADDING = 5;
+        public const int PADDING = 2;
 
-        public LetterReference(string referenceLetter, Rect bounds)
+        public LetterReference(string referenceLetter, Rect bounds, double fontRenderingEmSize)
         {
             InitializeComponent();
 
             this.Content = referenceLetter.ToUpper();
             this.Background = Brushes.GreenYellow;
 
-            // give letter some room
-            this.Width = (bounds.Width * referenceLetter.Length) + (PADDING * 2);
-            this.Height = bounds.Height + (PADDING * 2);
-            this.Padding = new Thickness(PADDING);
-
+            // give letters like 'M' and 'W' some room
+            this.Width = (bounds.Width * referenceLetter.Length) + (PADDING * 2) + 0;
+            this.Height = bounds.Height;
+   
             // make it stand out
-            this.FontWeight = FontWeights.ExtraBold;
+            this.FontWeight = FontWeights.Bold;
+
+            //
+            this.FontSize = fontRenderingEmSize;
+        }
+
         public void UpdateHighlight(string referenceLetter)
         {
             string s = (string)this.Content;

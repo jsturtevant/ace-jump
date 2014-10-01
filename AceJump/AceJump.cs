@@ -1,7 +1,8 @@
 ﻿namespace AceJump
 {
+    using System.Collections.ObjectModel;
     using System.Linq;
-    using System.Net.Mime;
+    using System.Windows.Media.TextFormatting;
 
     using Microsoft.VisualStudio.Text;
     using Microsoft.VisualStudio.Text.Formatting;
@@ -88,17 +89,34 @@
                         // save the location of this letterTofind to jump to later
                         string key = this.letterLocationSpans.AddSpan(span.Start);
 
+                        var fontRenderingEmSize = this.GetFontSize(line, i);
+
                         // Align the image with the top of the bounds of the text geometry
-                        var letterReference = new LetterReference(key, g.Bounds);
+                        var letterReference = new LetterReference(key, g.Bounds, fontRenderingEmSize);
                         Canvas.SetLeft(letterReference, g.Bounds.Left);
                         Canvas.SetTop(letterReference, g.Bounds.Top);
 
                         this.aceLayer.AddAdornment(AdornmentPositioningBehavior.TextRelative,span,null,letterReference,null);
+
+                        
                     }
 
 
                 }
             }
+        }
+
+        private double GetFontSize(ITextViewLine line, int i)
+        {
+            int indexOfTextLine = this.textView.TextViewLines.GetIndexOfTextLine(line);
+            Collection<IFormattedLine> formatLineInVisualBuffer =
+                this.textView.FormattedLineSource.FormatLineInVisualBuffer(
+                    this.textView.VisualSnapshot.GetLineFromLineNumber(indexOfTextLine));
+            TextRunProperties textRunProperties =
+                formatLineInVisualBuffer.First().GetCharacterFormatting(new SnapshotPoint(this.textView.TextSnapshot, i));
+            double fontRenderingEmSize = textRunProperties.FontRenderingEmSize;
+           
+            return fontRenderingEmSize;
         }
 
         public void ClearAdornments()
