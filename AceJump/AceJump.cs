@@ -91,7 +91,7 @@
 
                        
                         // Align the image with the top of the bounds of the text geometry
-                        var letterReference = new LetterReference(key, g.Bounds, 10);
+                        var letterReference = new LetterReference(key, g.Bounds, 12);
                         Canvas.SetLeft(letterReference, g.Bounds.Left);
                         Canvas.SetTop(letterReference, g.Bounds.Top);
 
