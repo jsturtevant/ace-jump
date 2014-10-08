@@ -32,6 +32,13 @@
             // the offset for the alphabet is number of groups -1
             // if groupgs =1 then a-Z. if groups = 2 then a-y and so on.
             this.listOffset = numberOfGroups - 1;
+
+            // stop the list off set at B
+            if (this.listOffset > 24)
+            {
+                this.listOffset = 24;
+            }
+
         }
 
         public int Count
@@ -50,16 +57,32 @@
                 {
                     return null;
                 }
-                return (char)('Z' - this.listOffset +1);
+                return (char)('Z' - this.listOffset );
+            }
+        }
+
+        public string LastKey
+        {
+            get
+            {
+                return this.dictionary.Last().Key;
             }
         }
 
         public string AddSpan(int span)
         {
             string key = string.Concat(prefix, currentLetter.ToString());
-            this.dictionary.Add(key, span);
 
+
+            if (!string.IsNullOrEmpty(prefix) && prefix.First() < this.OffsetKey.Value)
+            {
+                return string.Empty;
+            }
+          
+            this.dictionary.Add(key, span);
             this.IncrementKey();
+
+            
             return key;
         }
 
@@ -67,7 +90,7 @@
         {
             if (this.listOffset > 0)
             {
-                if (this.currentLetter == 'Z' - this.listOffset && string.IsNullOrEmpty(this.prefix))
+                if (this.currentLetter == this.OffsetKey.Value -1  && string.IsNullOrEmpty(this.prefix))
                 {
                     // then set prefix
                     this.currentLetter = START_LETTER;
@@ -96,7 +119,9 @@
         public int GetLetterPosition(string key)
         {
             int span;
-            this.dictionary.TryGetValue(key.ToUpper(), out span);
+            bool success = this.dictionary.TryGetValue(key.ToUpper(), out span);
+            if (!success)
+                return -1;
             return span;
         }
 
