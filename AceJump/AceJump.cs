@@ -89,10 +89,9 @@
                         // save the location of this letterTofind to jump to later
                         string key = this.letterLocationSpans.AddSpan(span.Start);
 
-                        var fontRenderingEmSize = this.GetFontSize(line, i);
-
+                       
                         // Align the image with the top of the bounds of the text geometry
-                        var letterReference = new LetterReference(key, g.Bounds, fontRenderingEmSize);
+                        var letterReference = new LetterReference(key, g.Bounds, 10);
                         Canvas.SetLeft(letterReference, g.Bounds.Left);
                         Canvas.SetTop(letterReference, g.Bounds.Top);
 
