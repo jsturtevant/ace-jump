@@ -9,6 +9,7 @@
     <Tags>Coding, Productivity, Power Tools</Tags>
   </Metadata>
   <Installation>
+    <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="11.0" />
     <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="12.0" />
   </Installation>
   <Dependencies>
