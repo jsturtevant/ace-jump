@@ -1,4 +1,4 @@
-﻿﻿// Modification of https://editorsamples.codeplex.com/ see history for original
+﻿﻿// Modification from samples at https://editorsamples.codeplex.com/ see history for original
 //Microsoft Public License (Ms-PL)
 //This license governs use of the accompanying software. If you use the software, you accept this license. If you do not accept the license, do not use the software.
 //1. Definitions
@@ -18,7 +18,6 @@
 //https://editorsamples.codeplex.com/
 
 
-
 namespace AceJump
 {
     using System.Windows.Input;
@@ -36,7 +35,7 @@ namespace AceJump
 
             // converts it to string representation.  IE. Key.E = "E" and Key.OemComma = "OemComma"
             string character = keyConverter.ConvertToString(key);
-            if (character != null && character.Length == 1)
+            if (!string.IsNullOrEmpty(character) && character.Length == 1)
             {
                 if (char.IsLetter(character, 0))
                 {
