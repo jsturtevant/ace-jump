@@ -142,13 +142,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AceJump.cs" />
-    <Compile Include="AceJumperControl.xaml.cs">
+    <Compile Include="View\AceJumperControl.xaml.cs">
       <DependentUpon>AceJumperControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="AceJumpFactory.cs" />
-    <Compile Include="IAceJumpAdornment.cs" />
+    <Compile Include="Interfaces\IAceJumpAdornment.cs" />
     <Compile Include="KeyUtility.cs" />
-    <Compile Include="LetterReference.xaml.cs">
+    <Compile Include="View\LetterReference.xaml.cs">
       <DependentUpon>LetterReference.xaml</DependentUpon>
     </Compile>
     <Compile Include="LetterReferenceDictionary.cs" />
@@ -163,11 +163,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="AceJumperControl.xaml">
+    <Page Include="View\AceJumperControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="LetterReference.xaml">
+    <Page Include="View\LetterReference.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

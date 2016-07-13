@@ -1,4 +1,5 @@
 ﻿using System;
+using AceJump.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AceJumpTests

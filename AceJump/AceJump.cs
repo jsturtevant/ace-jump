@@ -1,4 +1,6 @@
-﻿namespace AceJump
+﻿using AceJump.Interfaces;
+
+namespace AceJump
 {
     using System.Collections.ObjectModel;
     using System.Linq;
@@ -61,10 +63,10 @@
             for (int i = 0; i<this.aceLayer.Elements.Count; i++)
             {
                 //
-                if (this.aceLayer.Elements[i].Adornment is LetterReference == false)
+                if (this.aceLayer.Elements[i].Adornment is View.LetterReference == false)
                     continue;
 
-                LetterReference letterReference = (LetterReference)this.aceLayer.Elements[i].Adornment;
+                View.LetterReference letterReference = (View.LetterReference)this.aceLayer.Elements[i].Adornment;
                 letterReference.UpdateHighlight(ch);
             }
         }
@@ -91,7 +93,7 @@
 
                        
                         // Align the image with the top of the bounds of the text geometry
-                        var letterReference = new LetterReference(key, g.Bounds, 12);
+                        var letterReference = new View.LetterReference(key, g.Bounds, 12);
                         Canvas.SetLeft(letterReference, g.Bounds.Left);
                         Canvas.SetTop(letterReference, g.Bounds.Top);
 
@@ -149,7 +151,7 @@
              Geometry g = textView.TextViewLines.GetMarkerGeometry(span);
             if (g != null)
             {
-                AceJumperControl aceJumperControl = new AceJumperControl(this.textView);
+                View.AceJumperControl aceJumperControl = new View.AceJumperControl(this.textView);
                 Canvas.SetLeft(aceJumperControl, g.Bounds.Left);
                 Canvas.SetTop(aceJumperControl, g.Bounds.Top);
 

@@ -1,3 +1,5 @@
+using AceJump.Interfaces;
+
 namespace AceJump
 {
     using System;

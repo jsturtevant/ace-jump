@@ -1,9 +1,9 @@
-﻿namespace AceJump
-{
-    using System.Windows;
-    using System.Windows.Controls;
-    using System.Windows.Media;
+﻿using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 
+namespace AceJump.View
+{
     /// <summary>
     /// Interaction logic for LetterReference.xaml
     /// </summary>
