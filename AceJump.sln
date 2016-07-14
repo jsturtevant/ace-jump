@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AceJump", "AceJump\AceJump.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AceJumpTests", "AceJumpTests\AceJumpTests.csproj", "{0E2232F4-BC62-46C9-B469-2961991C7158}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AceJumpPackage", "AceJumpPackage\AceJumpPackage.csproj", "{11C07576-AB53-4A9E-AE0E-903649C0655B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{0E2232F4-BC62-46C9-B469-2961991C7158}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E2232F4-BC62-46C9-B469-2961991C7158}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E2232F4-BC62-46C9-B469-2961991C7158}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11C07576-AB53-4A9E-AE0E-903649C0655B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11C07576-AB53-4A9E-AE0E-903649C0655B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11C07576-AB53-4A9E-AE0E-903649C0655B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11C07576-AB53-4A9E-AE0E-903649C0655B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
