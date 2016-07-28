@@ -1,10 +1,10 @@
-﻿namespace AceJump
+﻿using System.ComponentModel.Composition;
+using AceJump;
+using Microsoft.VisualStudio.Text.Editor;
+using Microsoft.VisualStudio.Utilities;
+
+namespace AceJumpPackage.AceJump
 {
-    using System.ComponentModel.Composition;
-
-    using Microsoft.VisualStudio.Text.Editor;
-    using Microsoft.VisualStudio.Utilities;
-
     [Export(typeof(IKeyProcessorProvider))]
     [ContentType("text")]
     [TextViewRole(PredefinedTextViewRoles.Editable)]

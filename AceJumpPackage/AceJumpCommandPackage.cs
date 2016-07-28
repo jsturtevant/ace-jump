@@ -40,6 +40,7 @@ namespace AceJumpPackage
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [Guid(AceJumpCommandPackage.PackageGuidString)]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
+    [ProvideAutoLoad(UIContextGuids.CodeWindow)]
     public sealed class AceJumpCommandPackage : Package
     {
         /// <summary>

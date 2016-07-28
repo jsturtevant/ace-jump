@@ -59,13 +59,13 @@
     <Compile Include="JumpControlerTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\AceJump\AceJump.csproj">
       <Project>{a7c08663-be71-46d5-afa4-8758323b9238}</Project>
       <Name>AceJump</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

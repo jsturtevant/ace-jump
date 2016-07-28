@@ -32,6 +32,8 @@ namespace AceJumpPackage
         /// </summary>
         private readonly Package package;
 
+
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AceJumpCommand"/> class.
         /// Adds our command handlers for menu (commands must exist in the command table file)
@@ -45,6 +47,8 @@ namespace AceJumpPackage
             }
 
             this.package = package;
+
+            // init jumpcontroler
 
             OleMenuCommandService commandService = this.ServiceProvider.GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
             if (commandService != null)

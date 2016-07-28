@@ -72,6 +72,10 @@
     </Bitmaps>
   </Commands>
 
+<!--  <KeyBindings>-->
+<!--    <KeyBinding guid="guidAceJumpCommandPackageCmdSet" id="AceJumpCommandId" editor="guidVSStd97" mod1="CONTROL" mod2="ALT" key1="VK_OEM_PLUS"/>-->
+<!--  </KeyBindings>-->
+<!---->
   <Symbols>
     <!-- This is the package guid. -->
     <GuidSymbol name="guidAceJumpCommandPackage" value="{6a6872bc-0a5a-40f7-a47b-b5be44178e1e}" />

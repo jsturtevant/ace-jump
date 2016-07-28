@@ -142,6 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AceJump.cs" />
+    <Compile Include="AceKeyProcessor.cs" />
     <Compile Include="View\AceJumperControl.xaml.cs">
       <DependentUpon>AceJumperControl.xaml</DependentUpon>
     </Compile>
