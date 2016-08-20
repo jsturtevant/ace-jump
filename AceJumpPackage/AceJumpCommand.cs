@@ -6,7 +6,9 @@
 
 using System;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Globalization;
+using AceJump;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -33,6 +35,9 @@ namespace AceJumpPackage
         private readonly Package package;
 
 
+        private JumpControler _controller;
+
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AceJumpCommand"/> class.
@@ -49,6 +54,7 @@ namespace AceJumpPackage
             this.package = package;
 
             // init jumpcontroler
+            _controller = new JumpControler(new AceJump.AceJump());
 
             OleMenuCommandService commandService = this.ServiceProvider.GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
             if (commandService != null)
@@ -99,15 +105,9 @@ namespace AceJumpPackage
         {
             string message = string.Format(CultureInfo.CurrentCulture, "Inside {0}.MenuItemCallback()", this.GetType().FullName);
             string title = "AceJumpCommand";
-
-            // Show a message box to prove we were here
-            VsShellUtilities.ShowMessageBox(
-                this.ServiceProvider,
-                message,
-                title,
-                OLEMSGICON.OLEMSGICON_INFO,
-                OLEMSGBUTTON.OLEMSGBUTTON_OK,
-                OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+            Debug.WriteLine("AceJumpCommand.cs | MenuItemCallback | Getting input listener ready");
+            AceJumpAdornmentTextViewCreationListener.Instance.InputListener.AddFilter();
+//            _controller.ShowJumpEditor();
         }
     }
 }
