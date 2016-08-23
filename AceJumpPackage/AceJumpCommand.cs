@@ -106,8 +106,7 @@ namespace AceJumpPackage
             string message = string.Format(CultureInfo.CurrentCulture, "Inside {0}.MenuItemCallback()", this.GetType().FullName);
             string title = "AceJumpCommand";
             Debug.WriteLine("AceJumpCommand.cs | MenuItemCallback | Getting input listener ready");
-            AceJumpAdornmentTextViewCreationListener.Instance.InputListener.AddFilter();
-//            _controller.ShowJumpEditor();
+            InputListenerCreationFactory.Instance.InputListener.AddFilter();
         }
     }
 }

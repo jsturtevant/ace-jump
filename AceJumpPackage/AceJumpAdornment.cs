@@ -49,8 +49,15 @@ namespace AceJumpPackage
                 throw new ArgumentNullException("view");
             }
 
-            this.layer = view.GetAdornmentLayer("AceJumpAdornment");
+            try
+            {
+                this.layer = view.GetAdornmentLayer("AceJumpAdornment");
 
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
             this.view = view;
 //            this.view.LayoutChanged += this.OnLayoutChanged;
 
@@ -77,7 +84,7 @@ namespace AceJumpPackage
         {
             foreach (ITextViewLine line in e.NewOrReformattedLines)
             {
-                this.CreateVisuals(line);
+                this.CreateVisuals(line, 'a');
             }
         }
 
@@ -85,14 +92,15 @@ namespace AceJumpPackage
         /// Adds the scarlet box behind the 'a' characters within the given line
         /// </summary>
         /// <param name="line">Line to add the adornments</param>
-        private void CreateVisuals(ITextViewLine line)
+        /// <param name="c"></param>
+        private void CreateVisuals(ITextViewLine line, char c)
         {
             IWpfTextViewLineCollection textViewLines = this.view.TextViewLines;
 
             // Loop through each character, and place a box around any 'a'
             for (int charIndex = line.Start; charIndex < line.End; charIndex++)
             {
-                if (this.view.TextSnapshot[charIndex] == 'a')
+                if (this.view.TextSnapshot[charIndex] == c)
                 {
                     SnapshotSpan span = new SnapshotSpan(this.view.TextSnapshot, Span.FromBounds(charIndex, charIndex + 1));
                     Geometry geometry = textViewLines.GetMarkerGeometry(span);
@@ -117,6 +125,19 @@ namespace AceJumpPackage
                     }
                 }
             }
+        }
+
+        public void PlaceAtChar(char typedChar)
+        {
+            foreach (var textViewLine in view.TextViewLines)
+            {
+                CreateVisuals(textViewLine, typedChar);
+            }
+        }
+
+        public void ClearAdornments()
+        {
+            this.layer.RemoveAllAdornments();
         }
     }
 }

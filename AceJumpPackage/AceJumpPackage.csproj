@@ -52,7 +52,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AceJumpAdornment.cs" />
-    <Compile Include="AceJumpAdornmentTextViewCreationListener.cs" />
+    <Compile Include="InputListenerCreationFactory.cs" />
     <Compile Include="AceJumpCommand.cs" />
     <Compile Include="AceJumpCommandPackage.cs" />
     <Compile Include="AceJump\AceJump.cs" />
@@ -64,6 +64,7 @@
     <Compile Include="InputListener.cs" />
     <Compile Include="Interfaces\IAceJumpAdornment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AceJumpAdornmentTextViewCreationListener.cs" />
     <Compile Include="View\AceJumperControl.xaml.cs">
       <DependentUpon>AceJumperControl.xaml</DependentUpon>
     </Compile>

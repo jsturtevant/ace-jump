@@ -12,15 +12,16 @@ namespace AceJumpPackage
         IOleCommandTarget nextCommandHandler;
         private readonly IVsTextView _adapter;
         ITextView _textView;
+        private AceJumpAdornment _adornment;
 
         /// <summary>
         /// Add this filter to the chain of Command Filters
         /// </summary>
-        internal InputListener(IVsTextView adapter, ITextView textView)
+        internal InputListener(IVsTextView adapter, ITextView textView, AceJumpAdornment adornment)
         {
             _adapter = adapter;
-            this._textView = textView;
-            //            this.adornment = adornment;
+            _textView = textView;
+            _adornment = adornment;
         }
 
         public void AddFilter()
@@ -53,7 +54,9 @@ namespace AceJumpPackage
             char typedChar;
             if (TryGetTypedChar(pguidCmdGroup, nCmdID, pvaIn, out typedChar))
             {
-//                adornment.UpdateBar(typedChars++);
+                _adornment.ClearAdornments();
+                _adornment.PlaceAtChar(typedChar);
+                return hr;
             }
 
             hr = nextCommandHandler.Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
