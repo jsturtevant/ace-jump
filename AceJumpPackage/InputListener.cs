@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Text.Editor;
@@ -12,16 +13,16 @@ namespace AceJumpPackage
         IOleCommandTarget nextCommandHandler;
         private readonly IVsTextView _adapter;
         ITextView _textView;
-        private AceJumpAdornment _adornment;
+
+        public event KeyPressEventHandler KeyPressed;
 
         /// <summary>
         /// Add this filter to the chain of Command Filters
         /// </summary>
-        internal InputListener(IVsTextView adapter, ITextView textView, AceJumpAdornment adornment)
+        internal InputListener(IVsTextView adapter, ITextView textView)
         {
             _adapter = adapter;
             _textView = textView;
-            _adornment = adornment;
         }
 
         public void AddFilter()
@@ -30,9 +31,10 @@ namespace AceJumpPackage
 
         }
 
-        public void RemoveFilte()
+        public void RemoveFilter()
         {
             _adapter.RemoveCommandFilter(this);
+            nextCommandHandler = null;
         }
 
         /// <summary>
@@ -54,8 +56,7 @@ namespace AceJumpPackage
             char typedChar;
             if (TryGetTypedChar(pguidCmdGroup, nCmdID, pvaIn, out typedChar))
             {
-                _adornment.ClearAdornments();
-                _adornment.PlaceAtChar(typedChar);
+                KeyPressed?.Invoke(this, new KeyPressEventArgs(typedChar));
                 return hr;
             }
 

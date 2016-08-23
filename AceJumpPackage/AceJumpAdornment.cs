@@ -106,22 +106,16 @@ namespace AceJumpPackage
                     Geometry geometry = textViewLines.GetMarkerGeometry(span);
                     if (geometry != null)
                     {
-                        var drawing = new GeometryDrawing(this.brush, this.pen, geometry);
-                        drawing.Freeze();
-
-                        var drawingImage = new DrawingImage(drawing);
-                        drawingImage.Freeze();
-
-                        var image = new Image
-                        {
-                            Source = drawingImage,
-                        };
+                        string key = "A";
+                        var letterReference = new View.LetterReference(key, geometry.Bounds, 12);
+                        Canvas.SetLeft(letterReference, geometry.Bounds.Left);
+                        Canvas.SetTop(letterReference, geometry.Bounds.Top);
 
                         // Align the image with the top of the bounds of the text geometry
-                        Canvas.SetLeft(image, geometry.Bounds.Left);
-                        Canvas.SetTop(image, geometry.Bounds.Top);
+                        Canvas.SetLeft(letterReference, geometry.Bounds.Left);
+                        Canvas.SetTop(letterReference, geometry.Bounds.Top);
 
-                        this.layer.AddAdornment(AdornmentPositioningBehavior.TextRelative, span, null, image, null);
+                        this.layer.AddAdornment(AdornmentPositioningBehavior.TextRelative, span, null, letterReference, null);
                     }
                 }
             }

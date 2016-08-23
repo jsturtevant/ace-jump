@@ -38,15 +38,13 @@ namespace AceJumpPackage
             Instance = this;
             try
             {
-//                var adornment = textView.Properties.GetProperty<AceJumpAdornment>(nameof(AceJumpAdornment));
-                var adornment = textView.Properties.GetProperty<AceJumpAdornment>(nameof(AceJumpAdornment));
-                InputListener = new InputListener(textViewAdapter, textView, adornment);
+                InputListener = new InputListener(textViewAdapter, textView);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 throw;
-            }            // The adornment will listen to any event that changes the layout (text changes, scrolling, etc)
+            }
 
         }
 

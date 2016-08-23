@@ -8,6 +8,7 @@ using System;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Globalization;
+using System.Windows.Forms;
 using AceJump;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -34,11 +35,6 @@ namespace AceJumpPackage
         /// </summary>
         private readonly Package package;
 
-
-        private JumpControler _controller;
-
-
-
         /// <summary>
         /// Initializes a new instance of the <see cref="AceJumpCommand"/> class.
         /// Adds our command handlers for menu (commands must exist in the command table file)
@@ -53,15 +49,32 @@ namespace AceJumpPackage
 
             this.package = package;
 
-            // init jumpcontroler
-            _controller = new JumpControler(new AceJump.AceJump());
-
             OleMenuCommandService commandService = this.ServiceProvider.GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
             if (commandService != null)
             {
                 var menuCommandID = new CommandID(CommandSet, CommandId);
                 var menuItem = new MenuCommand(this.MenuItemCallback, menuCommandID);
                 commandService.AddCommand(menuItem);
+            }
+
+            InputListenerCreationFactory.Instance.InputListener.KeyPressed += InputListenerOnKeyPressed;
+        }
+
+        private bool isSecondLetter = false;
+
+        private void InputListenerOnKeyPressed(object sender, KeyPressEventArgs keyPressEventArgs)
+        {
+            if (!isSecondLetter)
+            {
+                AceJump.HighlightLetter(keyPressEventArgs.KeyChar.ToString());
+                isSecondLetter = true;
+            }
+            else
+            {
+                AceJump.JumpTo(keyPressEventArgs.KeyChar.ToString());
+                InputListenerCreationFactory.Instance.InputListener.RemoveFilter();
+                AceJump.ClearAdornments();
+                isSecondLetter = false;
             }
         }
 
@@ -85,6 +98,8 @@ namespace AceJumpPackage
             }
         }
 
+        public static AceJump.AceJump AceJump { get; set; }
+
         /// <summary>
         /// Initializes the singleton instance of the command.
         /// </summary>
@@ -103,8 +118,6 @@ namespace AceJumpPackage
         /// <param name="e">Event args.</param>
         private void MenuItemCallback(object sender, EventArgs e)
         {
-            string message = string.Format(CultureInfo.CurrentCulture, "Inside {0}.MenuItemCallback()", this.GetType().FullName);
-            string title = "AceJumpCommand";
             Debug.WriteLine("AceJumpCommand.cs | MenuItemCallback | Getting input listener ready");
             InputListenerCreationFactory.Instance.InputListener.AddFilter();
         }
