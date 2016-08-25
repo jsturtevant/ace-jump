@@ -51,15 +51,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AceJumpAdornment.cs" />
     <Compile Include="InputListenerCreationFactory.cs" />
     <Compile Include="AceJumpCommand.cs" />
     <Compile Include="AceJumpCommandPackage.cs" />
     <Compile Include="AceJump\AceJump.cs" />
-    <Compile Include="AceJump\AceJumpFactory.cs" />
-    <Compile Include="AceJump\AceKeyProcessor.cs" />
     <Compile Include="AceJump\JumpControler.cs" />
-    <Compile Include="Helpers\KeyUtility.cs" />
     <Compile Include="Helpers\LetterReferenceDictionary.cs" />
     <Compile Include="InputListener.cs" />
     <Compile Include="Interfaces\IAceJumpAdornment.cs" />

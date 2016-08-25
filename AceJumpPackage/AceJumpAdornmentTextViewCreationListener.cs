@@ -16,7 +16,7 @@ namespace AceJumpPackage
     /// </summary>
     [Export(typeof(IWpfTextViewCreationListener))]
     [ContentType("text")]
-    [TextViewRole(PredefinedTextViewRoles.Document)]
+    [TextViewRole(PredefinedTextViewRoles.Editable)]
     internal sealed class AceJumpAdornmentTextViewCreationListener : IWpfTextViewCreationListener
     {
         // Disable "Field is never assigned to..." and "Field is never used" compiler's warnings. Justification: the field is used by MEF.
@@ -27,8 +27,8 @@ namespace AceJumpPackage
         /// after the selection layer in the Z-order
         /// </summary>
         [Export(typeof(AdornmentLayerDefinition))]
-        [Name("AceJumpAdornment")]
-        [Order(After = PredefinedAdornmentLayers.Selection, Before = PredefinedAdornmentLayers.Text)]
+        [Name("AceJump")]
+        [Order(After = PredefinedAdornmentLayers.Caret)]
         private AdornmentLayerDefinition editorAdornmentLayer;
 
 #pragma warning restore 649, 169
