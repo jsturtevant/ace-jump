@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Microsoft.VisualStudio;
@@ -52,6 +54,21 @@ namespace AceJumpPackage
         public int Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
         {
             int hr = VSConstants.S_OK;
+            var x = new[] { 1, 4 };
+
+            if ((new[] {
+                4, // tab
+                7, // left arrow
+                11, // up arrow
+                9, // right arrow
+                13, // down arrow
+                103, // escape
+            }).Contains((int)nCmdID))
+            {
+                // send '\0' so we can abort
+                KeyPressed?.Invoke(this,new KeyPressEventArgs('\0'));
+                return hr;
+            }
 
             char typedChar;
             if (TryGetTypedChar(pguidCmdGroup, nCmdID, pvaIn, out typedChar))
@@ -73,9 +90,12 @@ namespace AceJumpPackage
         bool TryGetTypedChar(Guid cmdGroup, uint nCmdID, IntPtr pvaIn, out char typedChar)
         {
             typedChar = char.MinValue;
+            Debug.WriteLine("InputListener.cs | TryGetTypedChar | nCmdId " + nCmdID);
+            Debug.WriteLine("InputListener.cs | TryGetTypedChar | pvaIn " + pvaIn);
 
             if (cmdGroup != VSConstants.VSStd2K || nCmdID != (uint)VSConstants.VSStd2KCmdID.TYPECHAR)
                 return false;
+
 
             typedChar = (char)(ushort)Marshal.GetObjectForNativeVariant(pvaIn);
             return true;

@@ -23,7 +23,7 @@ namespace AceJump
         /// Controls the jump.
         /// </summary>
         /// <param name="key">The pressed key.</param>
-        /// <returns><c>true</c> if we moved the cursor (i.e. we jumped) else <c>false</c></returns>
+        /// <returns><c>true</c> if we moved the cursor (i.e. we jumped) or aborted else <c>false</c></returns>
         /// <exception cref="ArgumentNullException">aceJump is not set</exception>
         public bool ControlJump(char? key)
         {
@@ -39,6 +39,13 @@ namespace AceJump
                 {
                     return false;
                 }
+
+                if(key == '\0')
+                {
+                    Close();
+                    return true;
+                }
+
 
                 if (this.letterHighLightActive)
                 {
