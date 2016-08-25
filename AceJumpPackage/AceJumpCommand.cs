@@ -57,6 +57,8 @@ namespace AceJumpPackage
                 commandService.AddCommand(menuItem);
             }
 
+            _jumpControler = new JumpControler(AceJump);
+
             InputListenerCreationFactory.Instance.InputListener.KeyPressed += InputListenerOnKeyPressed;
         }
 
@@ -64,17 +66,9 @@ namespace AceJumpPackage
 
         private void InputListenerOnKeyPressed(object sender, KeyPressEventArgs keyPressEventArgs)
         {
-            if (!isSecondLetter)
+            if (_jumpControler.ControlJump(keyPressEventArgs.KeyChar))
             {
-                AceJump.HighlightLetter(keyPressEventArgs.KeyChar.ToString());
-                isSecondLetter = true;
-            }
-            else
-            {
-                AceJump.JumpTo(keyPressEventArgs.KeyChar.ToString());
                 InputListenerCreationFactory.Instance.InputListener.RemoveFilter();
-                AceJump.ClearAdornments();
-                isSecondLetter = false;
             }
         }
 
@@ -100,6 +94,8 @@ namespace AceJumpPackage
 
         public static AceJump.AceJump AceJump { get; set; }
 
+        private JumpControler _jumpControler;
+
         /// <summary>
         /// Initializes the singleton instance of the command.
         /// </summary>
@@ -118,7 +114,11 @@ namespace AceJumpPackage
         /// <param name="e">Event args.</param>
         private void MenuItemCallback(object sender, EventArgs e)
         {
+            if (_jumpControler.Active())
+                return;
+
             Debug.WriteLine("AceJumpCommand.cs | MenuItemCallback | Getting input listener ready");
+            _jumpControler.ShowJumpEditor();
             InputListenerCreationFactory.Instance.InputListener.AddFilter();
         }
     }

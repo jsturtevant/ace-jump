@@ -19,19 +19,25 @@ namespace AceJump
             this.aceJump = aceJump;
         }
 
+        /// <summary>
+        /// Controls the jump.
+        /// </summary>
+        /// <param name="key">The pressed key.</param>
+        /// <returns><c>true</c> if we moved the cursor (i.e. we jumped) else <c>false</c></returns>
+        /// <exception cref="ArgumentNullException">aceJump is not set</exception>
         public bool ControlJump(char? key)
         {
             if (this.aceJump == null)
             {
                 // something didn't get wired up right.  
-                return false;
+                throw new ArgumentNullException("aceJump is not set");
             }
 
             if (this.aceJump != null && this.aceJump.Active)
             {
                 if (!key.HasValue)
                 {
-                    return true;
+                    return false;
                 }
 
                 if (this.letterHighLightActive)
@@ -42,7 +48,7 @@ namespace AceJump
                         this.offsetKeyPressed = true;
                         this.previouskeypress = key.Value;
                         this.aceJump.UpdateLetter(key.Value.ToString());
-                        return true;
+                        return false;
                     }
 
                     if (this.offsetKeyPressed)
@@ -55,12 +61,10 @@ namespace AceJump
                     }
                     return true;
                 }
-                else
-                {
-                    this.aceJump.HighlightLetter(key.ToString().ToUpper());
-                    this.letterHighLightActive = true;
-                    return true;
-                }
+                this.aceJump.HighlightLetter(key.ToString().ToUpper());
+
+                this.letterHighLightActive = true;
+                return false;
             }
 
             return false;
