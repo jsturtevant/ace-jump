@@ -10,8 +10,11 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Windows.Forms;
 using AceJump;
+using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Text.Editor;
+using Microsoft.VisualStudio.TextManager.Interop;
 
 namespace AceJumpPackage
 {
@@ -59,7 +62,7 @@ namespace AceJumpPackage
 
             _jumpControler = new JumpControler(AceJump);
 
-            InputListenerCreationFactory.Instance.InputListener.KeyPressed += InputListenerOnKeyPressed;
+//            InputListenerCreationFactory.Instance.InputListener.KeyPressed += InputListenerOnKeyPressed;
         }
 
         private bool isSecondLetter = false;
@@ -117,9 +120,41 @@ namespace AceJumpPackage
             if (_jumpControler.Active())
                 return;
 
+            var txtMgr = (IVsTextManager)Package.GetGlobalService(typeof(SVsTextManager));
+            IVsTextView view;
+            txtMgr.GetActiveView(1, null, out view);
+
+            if (view == null)
+            {
+                Debug.WriteLine("AceJumpCommand.cs | MenuItemCallback | could not retrieve current view");
+                return;
+            }
+
+
+            _jumpControler?.Close();
+            var textView = GetWpfTextView(view);
+
             Debug.WriteLine("AceJumpCommand.cs | MenuItemCallback | Getting input listener ready");
             _jumpControler.ShowJumpEditor();
             InputListenerCreationFactory.Instance.InputListener.AddFilter();
+        }
+
+        private IWpfTextView GetWpfTextView(IVsTextView vTextView)
+        {
+            IWpfTextView view = null;
+            IVsUserData userData = vTextView as IVsUserData;
+
+            if (null != userData)
+            {
+                IWpfTextViewHost viewHost;
+                object holder;
+                Guid guidViewHost = DefGuidList.guidIWpfTextViewHost;
+                userData.GetData(ref guidViewHost, out holder);
+                viewHost = (IWpfTextViewHost)holder;
+                view = viewHost.TextView;
+            }
+
+            return view;
         }
     }
 }
