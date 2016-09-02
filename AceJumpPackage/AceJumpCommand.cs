@@ -61,8 +61,6 @@ namespace AceJumpPackage
             }
         }
 
-        private bool isSecondLetter = false;
-
         private void InputListenerOnKeyPressed(object sender, KeyPressEventArgs keyPressEventArgs)
         {
             if (_jumpControler.ControlJump(keyPressEventArgs.KeyChar))
