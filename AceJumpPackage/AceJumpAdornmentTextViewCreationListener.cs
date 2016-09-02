@@ -43,9 +43,9 @@ namespace AceJumpPackage
         public void TextViewCreated(IWpfTextView textView)
         {
             // The adornment will listen to any event that changes the layout (text changes, scrolling, etc)
-            var ace = new AceJump.AceJump();
-            ace.SetView(textView);
-            AceJumpCommand.AceJump = ace;
+//            var ace = new AceJump.AceJump();
+//            ace.SetView(textView);
+//            AceJumpCommand.AceJump = ace;
         }
 
         #endregion

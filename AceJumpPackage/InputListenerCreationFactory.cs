@@ -18,7 +18,6 @@ namespace AceJumpPackage
     [TextViewRole(PredefinedTextViewRoles.Editable)]
     internal sealed class InputListenerCreationFactory : IVsTextViewCreationListener
     {
-        public static InputListenerCreationFactory Instance { get; private set; }
         public InputListener InputListener { get; private set; }
 
         [Import]
@@ -34,17 +33,16 @@ namespace AceJumpPackage
 
         public void VsTextViewCreated(IVsTextView textViewAdapter)
         {
-            var textView = AdapterService.GetWpfTextView(textViewAdapter);
-            Instance = this;
-            try
-            {
-                InputListener = new InputListener(textViewAdapter, textView);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+//            var textView = AdapterService.GetWpfTextView(textViewAdapter);
+//            try
+//            {
+//                InputListener = new InputListener(textViewAdapter, textView);
+//            }
+//            catch (Exception e)
+//            {
+//                Console.WriteLine(e);
+//                throw;
+//            }
 
         }
 

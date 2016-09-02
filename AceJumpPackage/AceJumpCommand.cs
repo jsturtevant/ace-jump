@@ -59,10 +59,6 @@ namespace AceJumpPackage
                 var menuItem = new MenuCommand(this.MenuItemCallback, menuCommandID);
                 commandService.AddCommand(menuItem);
             }
-
-            _jumpControler = new JumpControler(AceJump);
-
-//            InputListenerCreationFactory.Instance.InputListener.KeyPressed += InputListenerOnKeyPressed;
         }
 
         private bool isSecondLetter = false;
@@ -71,7 +67,8 @@ namespace AceJumpPackage
         {
             if (_jumpControler.ControlJump(keyPressEventArgs.KeyChar))
             {
-                InputListenerCreationFactory.Instance.InputListener.RemoveFilter();
+                _input.KeyPressed -= InputListenerOnKeyPressed;
+                _input.RemoveFilter();
             }
         }
 
@@ -95,9 +92,8 @@ namespace AceJumpPackage
             }
         }
 
-        public static AceJump.AceJump AceJump { get; set; }
-
         private JumpControler _jumpControler;
+        private InputListener _input;
 
         /// <summary>
         /// Initializes the singleton instance of the command.
@@ -117,7 +113,7 @@ namespace AceJumpPackage
         /// <param name="e">Event args.</param>
         private void MenuItemCallback(object sender, EventArgs e)
         {
-            if (_jumpControler.Active())
+            if (_jumpControler!= null &&  _jumpControler.Active())
                 return;
 
             var txtMgr = (IVsTextManager)Package.GetGlobalService(typeof(SVsTextManager));
@@ -133,10 +129,17 @@ namespace AceJumpPackage
 
             _jumpControler?.Close();
             var textView = GetWpfTextView(view);
+            var ace = new AceJump.AceJump();
+            ace.SetView(textView);
+
+            _input = new InputListener(view,textView);
+
+            _jumpControler = new JumpControler(ace);
 
             Debug.WriteLine("AceJumpCommand.cs | MenuItemCallback | Getting input listener ready");
             _jumpControler.ShowJumpEditor();
-            InputListenerCreationFactory.Instance.InputListener.AddFilter();
+            _input.AddFilter();
+            _input.KeyPressed += InputListenerOnKeyPressed;
         }
 
         private IWpfTextView GetWpfTextView(IVsTextView vTextView)
