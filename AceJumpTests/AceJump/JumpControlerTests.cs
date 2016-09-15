@@ -1,4 +1,5 @@
-﻿using AceJump;
+﻿using System;
+using AceJump;
 using AceJumpPackage.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -22,10 +23,11 @@ namespace AceJumpPackage.Tests.AceJump
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void if_jump_adorment_is_null_return_false()
         {
             JumpControler controler = new JumpControler(null);
-            Assert.IsFalse(controler.ControlJump('2'));
+            controler.ControlJump('2');
         }
 
         [TestMethod]
@@ -46,12 +48,12 @@ namespace AceJumpPackage.Tests.AceJump
         }
 
         [TestMethod]
-        public void if_Active_and_no_key_passed_ignore_key()
+        public void if_Active_and_no_key_passed_doNotJump()
         {
             adornmentMock.Setup(a => a.Active).Returns(true);
             var handled = controler.ControlJump(null);
 
-            Assert.IsTrue(handled);
+            Assert.IsFalse(handled);
         }
 
         [TestMethod]
@@ -78,12 +80,12 @@ namespace AceJumpPackage.Tests.AceJump
             var handled = controler.ControlJump('a');
 
             adornmentMock.Verify(a => a.HighlightLetter("A"), Times.Once);
-            Assert.IsTrue(handled);
+            Assert.IsFalse(handled);
         }
 
 
         [TestMethod]
-        public void if_second_press_and_multplekey_selector_then_wait()
+        public void if_second_press_and_multplekey_selector_waitAndDoNotJump()
         {
             adornmentMock.Setup(a => a.Active).Returns(true);
             adornmentMock.Setup(a => a.OffsetKey).Returns('X');
@@ -94,7 +96,7 @@ namespace AceJumpPackage.Tests.AceJump
 
             adornmentMock.Verify(a => a.JumpTo("B"), Times.Never);
             adornmentMock.Verify(a => a.ClearAdornments(), Times.Never);
-            Assert.IsTrue(handled);
+            Assert.IsFalse(handled);
         }
 
         [TestMethod]
