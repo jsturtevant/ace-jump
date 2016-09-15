@@ -6,8 +6,8 @@
     <ProjectGuid>{0E2232F4-BC62-46C9-B469-2961991C7158}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AceJumpTests</RootNamespace>
-    <AssemblyName>AceJumpTests</AssemblyName>
+    <RootNamespace>AceJumpPackage.Tests</RootNamespace>
+    <AssemblyName>AceJumpPackage.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -54,9 +54,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="LetterReferenceDictionaryTests.cs" />
+    <Compile Include="Helpers\LetterReferenceDictionaryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="JumpControlerTests.cs" />
+    <Compile Include="AceJump\JumpControlerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

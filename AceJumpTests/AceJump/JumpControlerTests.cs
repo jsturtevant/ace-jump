@@ -1,12 +1,10 @@
-﻿using AceJumpPackage.Interfaces;
+﻿using AceJump;
+using AceJumpPackage.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
-namespace AceJumpTests
+namespace AceJumpPackage.Tests.AceJump
 {
-    using AceJump;
-
-    using Moq;
-
     [TestClass]
     public class JumpControlerTests
     {
