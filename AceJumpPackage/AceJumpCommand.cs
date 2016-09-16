@@ -7,12 +7,11 @@
 using System;
 using System.ComponentModel.Design;
 using System.Diagnostics;
-using System.Globalization;
 using System.Windows.Forms;
 using AceJump;
+using AceJumpPackage.Interfaces;
 using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
 
@@ -36,21 +35,30 @@ namespace AceJumpPackage
         /// <summary>
         /// VS Package that provides this command, not null.
         /// </summary>
-        private readonly Package package;
+        private readonly Package myPackage;
+
+        private readonly ICommandExecutorService myCommandExecutorService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AceJumpCommand"/> class.
         /// Adds our command handlers for menu (commands must exist in the command table file)
         /// </summary>
         /// <param name="package">Owner package, not null.</param>
-        private AceJumpCommand(Package package)
+        /// <param name="commandExecutor"></param>
+        private AceJumpCommand(Package package, ICommandExecutorService commandExecutor)
         {
             if (package == null)
             {
                 throw new ArgumentNullException("package");
             }
 
-            this.package = package;
+            if (commandExecutor == null)
+            {
+                throw new ArgumentNullException(nameof(commandExecutor));
+            }
+
+            this.myPackage = package;
+            this.myCommandExecutorService = commandExecutor;
 
             OleMenuCommandService commandService = this.ServiceProvider.GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
             if (commandService != null)
@@ -86,7 +94,7 @@ namespace AceJumpPackage
         {
             get
             {
-                return this.package;
+                return this.myPackage;
             }
         }
 
@@ -97,9 +105,10 @@ namespace AceJumpPackage
         /// Initializes the singleton instance of the command.
         /// </summary>
         /// <param name="package">Owner package, not null.</param>
-        public static void Initialize(Package package)
+        /// <param name="commandExecutor">command executor, not null. Needed to turn off VsVim during command execution</param>
+        public static void Initialize(Package package, ICommandExecutorService commandExecutor)
         {
-            Instance = new AceJumpCommand(package);
+            Instance = new AceJumpCommand(package, commandExecutor);
         }
 
         /// <summary>
@@ -111,7 +120,7 @@ namespace AceJumpPackage
         /// <param name="e">Event args.</param>
         private void MenuItemCallback(object sender, EventArgs e)
         {
-            if (_jumpControler!= null &&  _jumpControler.Active())
+            if (_jumpControler != null && _jumpControler.Active())
                 return;
 
             var txtMgr = (IVsTextManager)Package.GetGlobalService(typeof(SVsTextManager));
@@ -129,12 +138,10 @@ namespace AceJumpPackage
             var textView = GetWpfTextView(view);
             var ace = new AceJump.AceJump();
             ace.SetView(textView);
-
-            _input = new InputListener(view,textView);
+            _input = new InputListener(view, textView);
 
             _jumpControler = new JumpControler(ace);
 
-            Debug.WriteLine("AceJumpCommand.cs | MenuItemCallback | Getting input listener ready");
             _jumpControler.ShowJumpEditor();
             _input.AddFilter();
             _input.KeyPressed += InputListenerOnKeyPressed;

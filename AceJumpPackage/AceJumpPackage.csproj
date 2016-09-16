@@ -57,6 +57,8 @@
     <Compile Include="AceJumpCommandPackage.cs" />
     <Compile Include="AceJump\AceJump.cs" />
     <Compile Include="AceJump\JumpControler.cs" />
+    <Compile Include="Helpers\CommandExecutorService.cs" />
+    <Compile Include="Interfaces\ICommandExecutorService.cs" />
     <Compile Include="Helpers\LetterReferenceDictionary.cs" />
     <Compile Include="InputListener.cs" />
     <Compile Include="Interfaces\IAceJumpAdornment.cs" />
