@@ -1,15 +1,17 @@
-﻿namespace AceJump
+﻿using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.TextFormatting;
+using AceJumpPackage.Helpers;
+using AceJumpPackage.Interfaces;
+using AceJumpPackage.View;
+using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Text.Editor;
+using Microsoft.VisualStudio.Text.Formatting;
+
+namespace AceJumpPackage.AceJump
 {
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Windows.Media.TextFormatting;
-
-    using Microsoft.VisualStudio.Text;
-    using Microsoft.VisualStudio.Text.Formatting;
-    using System.Windows.Controls;
-    using System.Windows.Media;
-    using Microsoft.VisualStudio.Text.Editor;
-
     public class AceJump : IAceJumpAdornment
     {
         private IAdornmentLayer aceLayer;
@@ -172,7 +174,7 @@
             if (isValidPoint)
             {
                 SnapshotPoint snapshotPoint = new SnapshotPoint(textView.TextSnapshot, newCaretPostion);
-                this.textView.Caret.MoveTo(snapshotPoint);                
+                textView.Caret.MoveTo(snapshotPoint);                
             }
         }
 
