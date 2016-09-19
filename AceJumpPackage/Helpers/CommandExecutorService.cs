@@ -13,9 +13,15 @@ namespace AceJumpPackage.Helpers
         {
             _dte = Package.GetGlobalService(typeof(SDTE)) as DTE;
         }
+
         public bool IsCommandAvailable(string commandName)
         {
             return findCommand(_dte.Commands, commandName) != null;
+        }
+
+        public void Execute(string commandName)
+        {
+            _dte.ExecuteCommand(commandName);
         }
 
         private dynamic findCommand(Commands commands, string commandName)

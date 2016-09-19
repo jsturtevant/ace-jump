@@ -37,6 +37,12 @@ namespace AceJumpPackage
         /// </summary>
         private readonly Package myPackage;
 
+        /// <summary>
+        /// This toggles VsVim. Might lead to errors if VsVim is disabled when invoking AceJump. But since there's no variable that indicates if VsVim is active
+        /// or a command to just disable it, we need to use this one. 
+        /// </summary>
+        private const string VsVimToggleEnabled = "VsVim.ToggleEnabled";
+
         private readonly ICommandExecutorService myCommandExecutorService;
         private readonly IViewProvider myViewProvider;
 
@@ -83,6 +89,7 @@ namespace AceJumpPackage
             {
                 _input.KeyPressed -= InputListenerOnKeyPressed;
                 _input.RemoveFilter();
+                TryEnableVsVim();
             }
         }
 
@@ -142,7 +149,25 @@ namespace AceJumpPackage
             _jumpControler = new JumpControler(ace);
             _jumpControler.ShowJumpEditor();
 
+
+            TryDisableVsVim();
             CreateInputListener(view, textView);
+        }
+
+        private void TryDisableVsVim()
+        {
+            if (myCommandExecutorService.IsCommandAvailable(VsVimToggleEnabled))
+            {
+                myCommandExecutorService.Execute(VsVimToggleEnabled);
+            }
+        }
+
+        private void TryEnableVsVim()
+        {
+            if (myCommandExecutorService.IsCommandAvailable(VsVimToggleEnabled))
+            {
+                myCommandExecutorService.Execute(VsVimToggleEnabled);
+            }
         }
 
         private void CreateInputListener(IVsTextView view, IWpfTextView textView)
