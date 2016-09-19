@@ -20,7 +20,7 @@ namespace AceJumpPackage
     /// <summary>
     /// Command handler
     /// </summary>
-    internal sealed class AceJumpCommand
+    public sealed class AceJumpCommand
     {
         /// <summary>
         /// Command ID.
@@ -38,6 +38,7 @@ namespace AceJumpPackage
         private readonly Package myPackage;
 
         private readonly ICommandExecutorService myCommandExecutorService;
+        private readonly IViewProvider myViewProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AceJumpCommand"/> class.
@@ -45,11 +46,12 @@ namespace AceJumpPackage
         /// </summary>
         /// <param name="package">Owner package, not null.</param>
         /// <param name="commandExecutor"></param>
-        private AceJumpCommand(Package package, ICommandExecutorService commandExecutor)
+        /// <param name="viewProvider"></param>
+        private AceJumpCommand(IServiceProvider package, ICommandExecutorService commandExecutor, IViewProvider viewProvider)
         {
             if (package == null)
             {
-                throw new ArgumentNullException("package");
+                throw new ArgumentNullException(nameof(package));
             }
 
             if (commandExecutor == null)
@@ -57,10 +59,16 @@ namespace AceJumpPackage
                 throw new ArgumentNullException(nameof(commandExecutor));
             }
 
-            this.myPackage = package;
-            this.myCommandExecutorService = commandExecutor;
+            if (viewProvider == null)
+            {
+                throw new ArgumentNullException(nameof(viewProvider));
+            }
 
-            OleMenuCommandService commandService = this.ServiceProvider.GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
+            this._serviceProvider = package;
+            this.myCommandExecutorService = commandExecutor;
+            myViewProvider = viewProvider;
+
+            OleMenuCommandService commandService = this._serviceProvider.GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
             if (commandService != null)
             {
                 var menuCommandID = new CommandID(CommandSet, CommandId);
@@ -90,13 +98,7 @@ namespace AceJumpPackage
         /// <summary>
         /// Gets the service provider from the owner package.
         /// </summary>
-        private IServiceProvider ServiceProvider
-        {
-            get
-            {
-                return this.myPackage;
-            }
-        }
+        private IServiceProvider _serviceProvider;
 
         private JumpControler _jumpControler;
         private InputListener _input;
@@ -106,9 +108,10 @@ namespace AceJumpPackage
         /// </summary>
         /// <param name="package">Owner package, not null.</param>
         /// <param name="commandExecutor">command executor, not null. Needed to turn off VsVim during command execution</param>
-        public static void Initialize(Package package, ICommandExecutorService commandExecutor)
+        /// <param name="viewProvider">service to get current view</param>
+        public static void Initialize(IServiceProvider package, ICommandExecutorService commandExecutor, IViewProvider viewProvider)
         {
-            Instance = new AceJumpCommand(package, commandExecutor);
+            Instance = new AceJumpCommand(package, commandExecutor, viewProvider);
         }
 
         /// <summary>
@@ -123,46 +126,30 @@ namespace AceJumpPackage
             if (_jumpControler != null && _jumpControler.Active())
                 return;
 
-            var txtMgr = (IVsTextManager)Package.GetGlobalService(typeof(SVsTextManager));
-            IVsTextView view;
-            txtMgr.GetActiveView(1, null, out view);
-
+            IVsTextView view = myViewProvider.GetActiveView();
             if (view == null)
             {
                 Debug.WriteLine("AceJumpCommand.cs | MenuItemCallback | could not retrieve current view");
                 return;
             }
 
+            var textView = myViewProvider.GetActiveWpfView(view);
 
             _jumpControler?.Close();
-            var textView = GetWpfTextView(view);
             var ace = new AceJump.AceJump();
             ace.SetView(textView);
-            _input = new InputListener(view, textView);
 
             _jumpControler = new JumpControler(ace);
-
             _jumpControler.ShowJumpEditor();
-            _input.AddFilter();
-            _input.KeyPressed += InputListenerOnKeyPressed;
+
+            CreateInputListener(view, textView);
         }
 
-        private IWpfTextView GetWpfTextView(IVsTextView vTextView)
+        private void CreateInputListener(IVsTextView view, IWpfTextView textView)
         {
-            IWpfTextView view = null;
-            IVsUserData userData = vTextView as IVsUserData;
-
-            if (null != userData)
-            {
-                IWpfTextViewHost viewHost;
-                object holder;
-                Guid guidViewHost = DefGuidList.guidIWpfTextViewHost;
-                userData.GetData(ref guidViewHost, out holder);
-                viewHost = (IWpfTextViewHost)holder;
-                view = viewHost.TextView;
-            }
-
-            return view;
+            _input = new InputListener(view, textView);
+            _input.AddFilter();
+            _input.KeyPressed += InputListenerOnKeyPressed;
         }
     }
 }
