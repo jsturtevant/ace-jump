@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AceJump", "AceJump\AceJump.csproj", "{A7C08663-BE71-46D5-AFA4-8758323B9238}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AceJumpPackage", "AceJumpPackage\AceJumpPackage.csproj", "{11C07576-AB53-4A9E-AE0E-903649C0655B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AceJumpTests", "AceJumpTests\AceJumpTests.csproj", "{0E2232F4-BC62-46C9-B469-2961991C7158}"
 EndProject
@@ -13,10 +13,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A7C08663-BE71-46D5-AFA4-8758323B9238}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A7C08663-BE71-46D5-AFA4-8758323B9238}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A7C08663-BE71-46D5-AFA4-8758323B9238}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A7C08663-BE71-46D5-AFA4-8758323B9238}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11C07576-AB53-4A9E-AE0E-903649C0655B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11C07576-AB53-4A9E-AE0E-903649C0655B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11C07576-AB53-4A9E-AE0E-903649C0655B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11C07576-AB53-4A9E-AE0E-903649C0655B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0E2232F4-BC62-46C9-B469-2961991C7158}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0E2232F4-BC62-46C9-B469-2961991C7158}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E2232F4-BC62-46C9-B469-2961991C7158}.Release|Any CPU.ActiveCfg = Release|Any CPU

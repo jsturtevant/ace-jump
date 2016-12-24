@@ -1,11 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Collections.Generic;
+using AceJumpPackage.Helpers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace AceJumpTests
+namespace AceJumpPackage.Tests.Helpers
 {
-    using System.Collections.Generic;
-
-    using AceJump;
-
     [TestClass]
     public class LetterReferenceDictionaryTests
     {

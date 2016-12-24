@@ -1,15 +1,9 @@
-﻿namespace AceJump
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace AceJumpPackage.Helpers
 {
-    using System;
-    using System.ComponentModel;
-
-    using EnvDTE;
-
-    using Microsoft.VisualStudio.Shell;
-    using Microsoft.VisualStudio.Text;
-    using System.Collections.Generic;
-    using System.Linq;
-
     /// <summary>
     /// Tracks the location of the letters
     /// </summary>

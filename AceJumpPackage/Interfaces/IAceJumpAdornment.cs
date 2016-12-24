@@ -1,4 +1,4 @@
-﻿namespace AceJump
+﻿namespace AceJumpPackage.Interfaces
 {
     public interface IAceJumpAdornment
     {
