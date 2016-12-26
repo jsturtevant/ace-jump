@@ -37,11 +37,9 @@ namespace AceJumpPackage
         /// </summary>
         private readonly Package myPackage;
 
-        /// <summary>
-        /// This toggles VsVim. Might lead to errors if VsVim is disabled when invoking AceJump. But since there's no variable that indicates if VsVim is active
-        /// or a command to just disable it, we need to use this one. 
-        /// </summary>
-        private const string VsVimToggleEnabled = "VsVim.ToggleEnabled";
+        private const string VsVimSetDisabled = "VsVim.SetDisabled";
+
+        private const string VsVimSetEnabled = "VsVim.SetEnabled";
 
         private readonly ICommandExecutorService myCommandExecutorService;
         private readonly IViewProvider myViewProvider;
@@ -156,17 +154,17 @@ namespace AceJumpPackage
 
         private void TryDisableVsVim()
         {
-            if (myCommandExecutorService.IsCommandAvailable(VsVimToggleEnabled))
+            if (myCommandExecutorService.IsCommandAvailable(VsVimSetDisabled))
             {
-                myCommandExecutorService.Execute(VsVimToggleEnabled);
+                myCommandExecutorService.Execute(VsVimSetDisabled);
             }
         }
 
         private void TryEnableVsVim()
         {
-            if (myCommandExecutorService.IsCommandAvailable(VsVimToggleEnabled))
+            if (myCommandExecutorService.IsCommandAvailable(VsVimSetEnabled))
             {
-                myCommandExecutorService.Execute(VsVimToggleEnabled);
+                myCommandExecutorService.Execute(VsVimSetEnabled);
             }
         }
 
