@@ -10,10 +10,12 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Runtime.InteropServices;
+using AceJumpPackage.Helpers;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.Win32;
 
 namespace AceJumpPackage
@@ -67,7 +69,7 @@ namespace AceJumpPackage
         /// </summary>
         protected override void Initialize()
         {
-            AceJumpCommand.Initialize(this);
+            AceJumpCommand.Initialize(this,new CommandExecutorService(),new ViewProvider((IVsTextManager) GetGlobalService(typeof(SVsTextManager))));
             base.Initialize();
         }
 
