@@ -1,3 +1,11 @@
+version 1.2
+	Contributions from mgutekunst(https://github.com/mgutekunst) 
+		-added custom command to tools menu so can now set keybinding to custom keybinding (https://github.com/jsturtevant/ace-jump/pull/5)
+		-added support for vsvim (https://github.com/jsturtevant/ace-jump/pull/6)
+
+	Known issues
+		-Ace-Jump's first selection is discarded in Visual mode for VsVim (https://github.com/jsturtevant/ace-jump/issues/7)
+		
 version 1.1
 -build for VS2015 RC
 
