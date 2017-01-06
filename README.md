@@ -23,9 +23,9 @@ To change keybinding:
 ## Contributors
 Thanks to everyone who has contibuted to the project:
 
-[mgutekunst](https://github.com/mgutekunst)
-[aerworker](https://github.com/aerworker)
-awesome unknown person when first released 
+- [mgutekunst](https://github.com/mgutekunst)
+- [aerworker](https://github.com/aerworker)
+- awesome unknown person when first released 
 
 ## Build yourself
 
