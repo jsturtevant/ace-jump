@@ -4,12 +4,12 @@ Allows for quick movement around the editor screen.  Inspired by [AceJump for We
 
 Download it at https://marketplace.visualstudio.com/items?itemName=jsturtevant.AceJump
 
-![demo of acejump for visual studio](https://github.com/jsturtevant/ace-jump/blob/master/ace-jump-demo.gif)
-
-## Use:
+## Use
 1. Press "Ctrl + Alt + ;" to display a key selector.  
 2. Press any letter to hightlight occurances in the text editor.   
 3. Press highlighted character and your cursor jumps to that spot!
+
+![demo of acejump for visual studio](https://github.com/jsturtevant/ace-jump/blob/master/ace-jump-demo.gif)
 
 To change keybinding: 
 
