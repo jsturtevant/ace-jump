@@ -72,9 +72,9 @@
     </Bitmaps>
   </Commands>
 
-<!--  <KeyBindings>-->
-<!--    <KeyBinding guid="guidAceJumpCommandPackageCmdSet" id="AceJumpCommandId" editor="guidVSStd97" mod1="CONTROL" mod2="ALT" key1="VK_OEM_PLUS"/>-->
-<!--  </KeyBindings>-->
+  <KeyBindings>
+    <KeyBinding guid="guidAceJumpCommandPackageCmdSet" id="AceJumpCommandId" editor="guidVSStd97" mod1="CONTROL ALT" key1="VK_OEM_1"/>
+  </KeyBindings>
 <!---->
   <Symbols>
     <!-- This is the package guid. -->
