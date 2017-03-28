@@ -26,10 +26,11 @@ Thanks to everyone who has contibuted to the project:
 - [mgutekunst](https://github.com/mgutekunst)
 - [aerworker](https://github.com/aerworker)
 - awesome unknown person when first released 
+- [m0d7](https://github.com/m0d7)
 
 ## Build yourself
 
-1. [Install VS 2015 SDK] (https://msdn.microsoft.com/en-us/library/mt683786.aspx)
+1. [Install VS 2017 Extensibility Workload] (https://docs.microsoft.com/en-us/visualstudio/extensibility/installing-the-visual-studio-sdk)
 2. Build Project using VS Build
 3. Run Unit Tests
 
