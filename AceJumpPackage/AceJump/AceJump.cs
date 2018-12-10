@@ -174,7 +174,11 @@ namespace AceJumpPackage.AceJump
             if (isValidPoint)
             {
                 SnapshotPoint snapshotPoint = new SnapshotPoint(textView.TextSnapshot, newCaretPostion);
-                textView.Caret.MoveTo(snapshotPoint);                
+                if(textView.Selection.IsActive)
+                {
+                    textView.Selection.Clear();
+                }
+                textView.Caret.MoveTo(snapshotPoint);
             }
         }
 
