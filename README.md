@@ -27,6 +27,7 @@ Thanks to everyone who has contibuted to the project:
 - [aerworker](https://github.com/aerworker)
 - awesome unknown person when first released 
 - [m0d7](https://github.com/m0d7)
+- [jpcrs](https://github.com/jpcrs)
 
 ## Build yourself
 

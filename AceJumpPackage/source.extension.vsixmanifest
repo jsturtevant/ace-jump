@@ -1,28 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
-  <Metadata>
-    <Identity Id="AceJump..ef1d1d6d-3651-493e-93cd-778aeef3a117" Version="1.3" Language="en-US" Publisher="James Sturtevant" />
-    <DisplayName>AceJump</DisplayName>
-    <Description xml:space="preserve">Allows for quick movement around the editor screen.  Inspired by AceJump for Webstorm and Emacs.  </Description>
-    <License >LICENSE.txt</License>
-    <ReleaseNotes>ReleaseNotes.txt</ReleaseNotes>
-    <PreviewImage>ace-jump-demo.gif</PreviewImage>
-    <Tags>Coding, Productivity, Power Tools</Tags>
-  </Metadata>
-  <Installation>
-    <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[14.0,17.0)" />
-    <InstallationTarget Version="[11.0]" Id="Microsoft.VisualStudio.Pro" />
-    <InstallationTarget Version="[12.0]" Id="Microsoft.VisualStudio.Pro" />
-    <InstallationTarget Version="[15.0,17.0)" Id="Microsoft.VisualStudio.Pro" />
-  </Installation>
-  <Dependencies>
-    <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
-  </Dependencies>
-  <Assets>
-    <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
-    <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%|" />
-  </Assets>
-  <Prerequisites>
-    <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0.26208.0,)" DisplayName="Visual Studio core editor" />
-  </Prerequisites>
+    <Metadata>
+        <Identity Id="AceJump..ef1d1d6d-3651-493e-93cd-778aeef3a117" Version="1.4" Language="en-US" Publisher="James Sturtevant" />
+        <DisplayName>AceJump</DisplayName>
+        <Description xml:space="preserve">Allows for quick movement around the editor screen.  Inspired by AceJump for Webstorm and Emacs.  </Description>
+        <License >LICENSE.txt</License>
+        <ReleaseNotes>ReleaseNotes.txt</ReleaseNotes>
+        <PreviewImage>ace-jump-demo.gif</PreviewImage>
+        <Tags>Coding, Productivity, Power Tools</Tags>
+    </Metadata>
+    <Installation>
+        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[14.0,17.0)" />
+        <InstallationTarget Version="[11.0]" Id="Microsoft.VisualStudio.Pro" />
+        <InstallationTarget Version="[12.0]" Id="Microsoft.VisualStudio.Pro" />
+        <InstallationTarget Version="[15.0,17.0)" Id="Microsoft.VisualStudio.Pro" />
+    </Installation>
+    <Dependencies>
+        <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
+    </Dependencies>
+    <Assets>
+        <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+        <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%|" />
+    </Assets>
+    <Prerequisites>
+        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0.26208.0,)" DisplayName="Visual Studio core editor" />
+    </Prerequisites>
 </PackageManifest>
